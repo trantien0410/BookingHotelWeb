@@ -3,7 +3,7 @@
 import axios from "axios";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
@@ -17,7 +17,7 @@ import { signIn } from "next-auth/react";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
-  const loginModal = useLoginModal()
+  const loginModal = useLoginModal();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,22 +33,44 @@ const RegisterModal = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
+  const onSubmit: SubmitHandler<FieldValues> = useCallback(
+    (data) => {
+      setIsLoading(true);
 
-    axios
-      .post("api/register", data)
-      .then(() => {
-        loginModal.onOpen();
+      axios
+        .post("api/register", data)
+        .then(() => {
+          loginModal.onOpen();
+          registerModal.onClose();
+        })
+        .catch((error) => {
+          toast.error("error");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [loginModal, registerModal, setIsLoading]
+  );
+
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        handleSubmit(onSubmit)();
+      }
+      if (event.key === "Escape") {
+        event.preventDefault();
         registerModal.onClose();
-      })
-      .catch((error) => {
-        toast.error("error");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleSubmit, onSubmit, registerModal]);
 
   const onToggle = useCallback(() => {
     registerModal.onClose();
@@ -88,7 +110,11 @@ const RegisterModal = () => {
 
   const footerContent = (
     <div className="flex flex-col gap-4 mt-3">
-      <hr />
+      <div className="flex flex-row items-center gap-3">
+        <div className="w-full h-[1px] bg-neutral-200" />
+        <div className="font-semibold text-neutral-500 text-xs">or</div>
+        <div className="w-full h-[1px] bg-neutral-200" />
+      </div>
       <Button
         outline
         label="Continue with Google"
@@ -103,26 +129,33 @@ const RegisterModal = () => {
       />
       <div
         className="
-          text-neutral-500 
-          text-center 
-          mt-4 
-          font-light
-        "
+                text-neutral-500
+                text-center
+                mt-4
+                font-light
+            "
       >
-        <p>
-          Already have an account?
-          <span
+        <div
+          className="
+          flex 
+          flex-row 
+          items-center 
+          justify-center 
+          gap-2
+        "
+        >
+          <div>Already have an account?</div>
+          <div
             onClick={onToggle}
             className="
-              text-neutral-800
-              cursor-pointer 
-              hover:underline
-            "
+                        text-neutral-800
+                        cursor-pointer
+                        hover:underline
+                    "
           >
-            {" "}
             Log in
-          </span>
-        </p>
+          </div>
+        </div>
       </div>
     </div>
   );

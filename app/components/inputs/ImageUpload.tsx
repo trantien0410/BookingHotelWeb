@@ -30,28 +30,30 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
       uploadPreset={uploadPreset}
       options={{
         maxFiles: 1,
+        cropping: true,
       }}
     >
       {({ open }) => {
         return (
           <div
             onClick={() => open?.()}
-            className="
-              relative
-              cursor-pointer
-              hover:opacity-70
-              transition
-              border-dashed 
-              border-2 
-              p-20 
-              border-neutral-300
-              flex
-              flex-col
-              justify-center
-              items-center
-              gap-4
-              text-neutral-600
-            "
+            className={`
+                            relative
+                            cursor-pointer
+                            hover:opacity-70
+                            transition
+                            border-dashed
+                            ${value ? "border-0" : "border-2"}
+                            p-20
+                            border-neutral-300
+                            flex
+                            flex-col
+                            justify-center
+                            items-center
+                            gap-4
+                            text-neutral-600
+                            rounded-xl
+                        `}
           >
             <TbPhotoPlus size={50} />
             <div className="font-semibold text-lg">Click to upload</div>
@@ -62,9 +64,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
               >
                 <Image
                   fill
-                  style={{ objectFit: "cover" }}
+                  style={{ objectFit: "cover", borderRadius: "0.75rem" }}
                   src={value}
-                  alt="House"
+                  alt="Upload"
                 />
               </div>
             )}

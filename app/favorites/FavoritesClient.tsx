@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Container from "../components/Container";
 import Heading from "../components/Heading";
 import ListingCard from "../components/listings/ListingCard";
@@ -12,6 +15,17 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
   listings,
   currentUser,
 }) => {
+  useEffect(() => {
+    const originalTitle = document.title; // Store the original document title
+
+    document.title = `${currentUser?.name?.split(" ")[0]}'s Favorites`;
+
+    return () => {
+      // Restore the original document title when the component unmounts
+      document.title = originalTitle;
+    };
+  }, [currentUser]);
+
   return (
     <Container>
       <Heading

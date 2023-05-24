@@ -9,12 +9,16 @@ interface CategoryBoxProps {
   icon: IconType;
   label: string;
   selected?: boolean;
+  firstCategory?: boolean;
+  lastCategory?: boolean;
 }
 
 const CategoryBox: React.FC<CategoryBoxProps> = ({
   icon: Icon,
   label,
   selected,
+  firstCategory,
+  lastCategory,
 }) => {
   const router = useRouter();
   const params = useSearchParams();
@@ -46,24 +50,36 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
 
   return (
     <div
-    onClick={handleClick}
+      onClick={handleClick}
       className={`
-        flex 
-        flex-col 
-        items-center 
-        justify-center 
-        gap-2
-        p-3
-        border-b-2
-        hover:text-neutral-800
-        transition
-        cursor-pointer
-        ${selected ? "border-b-neutral-800" : "border-transparent"}
-        ${selected ? "text-neutral-800" : "text-neutral-500"}
+          flex
+          flex-col
+          items-center
+          justify-center
+          mx-4
+          ${firstCategory && !lastCategory ? "ml-0" : ""}
+          ${!firstCategory && lastCategory ? "mr-0" : ""}
+          pb-3
+          mt-4
+          mb-4
+          border-b-2
+          hover:text-neutral-800
+          md:hover:border-b-neutral-300
+          transition
+          duration-150
+          ease-in-out
+          cursor-pointer
+          ${
+            selected
+              ? "md:border-b-neutral-800 border-b-[3px]"
+              : "border-transparent"
+          }
+          ${selected ? "text-neutral-800" : "text-neutral-500"}
+          whitespace-nowrap
         `}
     >
       <Icon size={26} />
-      <div className="font-medium text-sm">{label}</div>
+      <div className="font-bold text-xs mt-3">{label}</div>
     </div>
   );
 };

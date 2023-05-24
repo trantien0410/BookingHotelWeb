@@ -20,6 +20,7 @@ const Navbar : React.FC<NavbarProps>= ({
         className="
           py-4 
           border-b-[1px]
+          max-h-[90px]
         "
       >
         <Container>

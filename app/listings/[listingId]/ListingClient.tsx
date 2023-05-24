@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Range } from "react-date-range";
 import toast from "react-hot-toast";
+import { IoDiamondOutline } from "react-icons/io5";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -36,6 +37,12 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const loginModal = useLoginModal();
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(listing.price);
+  const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+  const [daysCount, setDaysCount] = useState(1);
+  const [tax, setTax] = useState<number>(0);
+
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
@@ -51,9 +58,30 @@ const ListingClient: React.FC<ListingClientProps> = ({
     return dates;
   }, [reservations]);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(listing.price);
-  const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+  const fees = [
+    {
+      name: "Cleaning Fee",
+      amount: 60,
+    },
+    {
+      name: "Airbnb Service Fee",
+      amount: 30,
+    },
+  ];
+
+  const reCalculateTotal = (previousTotal: number, currentTax: number) => {
+    let total = previousTotal;
+    fees.forEach((fee) => {
+      total = total + fee.amount;
+    });
+    return total + currentTax;
+  };
+
+  useEffect(() => {
+    setTax(Number((totalPrice * 0.13).toFixed(2)));
+  }, [totalPrice]);
+
+  const newTotal = reCalculateTotal(totalPrice, tax);
 
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
@@ -61,40 +89,32 @@ const ListingClient: React.FC<ListingClientProps> = ({
     }
     setIsLoading(true);
 
-    axios.post('/api/reservations', {
-      totalPrice,
-      startDate: dateRange.startDate,
-      endDate: dateRange.endDate,
-      listingId: listing?.id
-    })
-    .then(() => {
-      toast.success('Listing reserved!');
-      setDateRange(initialDateRange);
-      router.push('/trips');
-    })
-    .catch(() => {
-      toast.error('Something went wrong.');
-    })
-    .finally(() => {
-      setIsLoading(false);
-    })
-},
-[
-  totalPrice, 
-  dateRange, 
-  listing?.id,
-  router,
-  currentUser,
-  loginModal
-]);
+    axios
+      .post("/api/reservations", {
+        newTotal,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        listingId: listing?.id,
+      })
+      .then(() => {
+        toast.success("Listing reserved!");
+        setDateRange(initialDateRange);
+        router.push("/trips");
+      })
+      .catch(() => {
+        toast.error("Something went wrong.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [newTotal, dateRange, listing?.id, router, currentUser, loginModal]);
 
-useEffect(() => {
+  useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
-      const dayCount = differenceInDays(
-        dateRange.endDate, 
-        dateRange.startDate
-      );
-      
+      const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
+
+      setDaysCount(dayCount);
+
       if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price);
       } else {
@@ -106,6 +126,18 @@ useEffect(() => {
   const category = useMemo(() => {
     return categories.find((items) => items.label === listing.category);
   }, [listing.category]);
+
+  useEffect(() => {
+    const originalTitle = document.title; // Store the original document title
+
+    document.title = `${listing.title} - Houses for Rent in ${listing.locationValue} - Vatibnb`;
+
+    return () => {
+      // Restore the original document title when the component unmounts
+      document.title = originalTitle;
+    };
+  }, [listing.title, listing.locationValue]);
+
   return (
     <Container>
       <div
@@ -140,7 +172,7 @@ useEffect(() => {
               bathroomCount={listing.bathroomCount}
               locationValue={listing.locationValue}
             />
-            <div 
+            <div
               className="
                 order-first 
                 mb-10 
@@ -150,13 +182,39 @@ useEffect(() => {
             >
               <ListingReservation
                 price={listing.price}
-                totalPrice={totalPrice}
+                totalPerNight={totalPrice}
+                totalPrice={newTotal}
                 onChangeDate={(value) => setDateRange(value)}
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
                 disabled={isLoading}
                 disabledDates={disabledDates}
+                daysCount={daysCount}
+                fees={fees}
+                tax={tax}
               />
+              <div
+                className="
+                mt-4 
+                border 
+                border-neutral-300 
+                rounded-xl 
+                p-6 
+                flex 
+                flex-row 
+                items-center 
+                justify-between
+              "
+              >
+                <div className="font-light">
+                  <strong className="font-semibold">
+                    This is a rare find.
+                  </strong>{" "}
+                  {listing.user.name?.split(" ")[0]}&apos;s place on Airbnb is
+                  usually fully booked.
+                </div>
+                <IoDiamondOutline className="text-rose-500 ml-4" size={50} />
+              </div>
             </div>
           </div>
         </div>

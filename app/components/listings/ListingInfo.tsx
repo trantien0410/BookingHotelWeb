@@ -6,10 +6,13 @@ import { IconType } from "react-icons";
 import Avatar from "../Avatar";
 import ListingCategory from "./ListingCategory";
 import dynamic from "next/dynamic";
+import { GrGroup } from "react-icons/gr";
+import { MdOutlineBedroomParent } from "react-icons/md";
+import { FaShower } from "react-icons/fa";
 
-const Map = dynamic(() => import('../Map'), { 
-    ssr: false 
-  });
+const Map = dynamic(() => import("../Map"), {
+  ssr: false,
+});
 
 interface ListingInfoProps {
   user: SafeUser;
@@ -48,11 +51,13 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             flex 
             flex-row 
             items-center
-            gap-2
+            justify-between
+            gap-3
+            mb-4
           "
         >
           <div>Hosted by {user?.name}</div>
-          <Avatar src={user?.image} />
+          <Avatar src={user?.image} large />
         </div>
         <div
           className="
@@ -64,9 +69,56 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             text-neutral-500
           "
         >
-          <div>{guestCount} guests</div>
-          <div>{roomCount} rooms</div>
-          <div>{bathroomCount} bathrooms</div>
+          <div
+            className="
+            flex
+            flex-row
+            gap-3
+            items-center
+            justify-center
+            py-6
+            border
+            rounded-xl
+            border-neutral-300
+            flex-grow
+          "
+          >
+            <GrGroup size={24} />
+            {guestCount} {guestCount > 1 ? "guests" : "guest"}
+          </div>
+          <div
+            className="
+            flex
+            flex-row
+            gap-3
+            items-center
+            justify-center
+            py-6 border
+            rounded-xl
+            border-neutral-300
+            flex-grow
+          "
+          >
+            <MdOutlineBedroomParent size={24} />
+            {roomCount} {roomCount > 1 ? "rooms" : "room"}
+          </div>
+          <div
+            className="
+            flex 
+            flex-row 
+            gap-3 
+            items-center 
+            justify-center 
+            py-6 
+            border 
+            rounded-xl 
+            border-neutral-300 
+            flex-grow
+          "
+          >
+            <FaShower size={24} />
+            {bathroomCount} {bathroomCount > 1 ? "bathrooms" : "bathroom"}
+          </div>
         </div>
       </div>
       <hr />
@@ -77,7 +129,8 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           description={category?.description}
         />
       )}
-      <hr />
+      <hr className="my-6" />
+      <div className="text-xl font-semibold">About this place</div>
       <div
         className="
       text-lg font-light text-neutral-500"

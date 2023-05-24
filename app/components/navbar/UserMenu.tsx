@@ -3,7 +3,7 @@
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
 import MenuItem from "./MenuItem";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
@@ -20,8 +20,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
-  const rentModal = useRentModal()
+  const rentModal = useRentModal();
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -31,49 +32,67 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     if (!currentUser) {
       return loginModal.onOpen();
     }
-
-    rentModal.onOpen()
+    rentModal.onOpen();
   }, [loginModal, rentModal, currentUser]);
 
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    },
+    [menuRef]
+  );
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <div className="flex flex-row items-center gap-3">
         <div
           onClick={onRent}
           className="
             hidden
             md:block
-            text-sm 
-            font-semibold 
-            py-3 
-            px-4 
-            rounded-full 
-            hover:bg-neutral-100 
-            transition 
+            text-sm
+            font-bold
+            py-3
+            px-4
+            rounded-full
+            hover:bg-neutral-100
+            text-neutral-800
+            transition
             cursor-pointer
+            whitespace-nowrap
           "
         >
           VatiBnb your home
         </div>
         <div
           onClick={toggleOpen}
-          className="
-          p-4
-          md:py-1
-          md:px-2
-          border-[1px] 
-          border-neutral-200 
-          flex 
-          flex-row 
-          items-center 
-          gap-3 
-          rounded-full 
-          cursor-pointer 
-          hover:shadow-md 
-          transition
-          "
+          className={`
+                        p-4
+                        md:p-1.5
+                        border-[1px]
+                        border-neutral-200
+                        flex
+                        flex-row
+                        items-center
+                        gap-3
+                        rounded-full
+                        cursor-pointer
+                        hover:drop-shadow
+                        bg-white
+                        ${isOpen ? "drop-shadow" : ""}
+                        transition
+                    `}
         >
-          <AiOutlineMenu />
+          <AiOutlineMenu className="md:ml-2" />
           <div className="hidden md:block">
             <Avatar src={currentUser?.image} />
           </div>
@@ -82,33 +101,55 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       {isOpen && (
         <div
           className="
-            absolute 
-            rounded-xl 
-            shadow-md
+            mt-3
+            absolute
+            rounded-xl
+            drop-shadow-xl
+            ring-4
+            ring-gray-100
+            ring-opacity-30
             w-[40vw]
-            md:w-3/4 
-            bg-white 
-            overflow-hidden 
-            right-0 
-            top-12 
+            md:w-[28vw]
+            bg-white
+            overflow-hidden
+            right-0
             text-sm
+            py-2
+            max-w-[16rem]
           "
         >
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem onClick={() => router.push("/trips")} label="My trips" />
-                <MenuItem onClick={() => router.push("/favorites")} label="My favorites" />
-                <MenuItem onClick={() => router.push("/reservations")} label="My reservations" />
-                <MenuItem onClick={() => router.push("/properties")} label="My properties" />
-                <MenuItem onClick={rentModal.onOpen} label="VatiBnb my home" />
+                <MenuItem
+                  onClick={() => router.push("/trips")}
+                  label="My trips"
+                  isBold
+                />
+                <MenuItem
+                  onClick={() => router.push("/favorites")}
+                  label="My favorites"
+                  isBold
+                />
+                <MenuItem
+                  onClick={() => router.push("/reservations")}
+                  label="My reservations"
+                  isBold
+                />
+                <MenuItem
+                  onClick={() => router.push("/properties")}
+                  label="My properties"
+                  isBold
+                />
+                <div className="my-2 bg-neutral-200 w-full h-[1px]" />
+                <MenuItem onClick={rentModal.onOpen} label="VatiBnb your home" />
                 <hr />
                 <MenuItem onClick={() => signOut()} label="Logout" />
               </>
             ) : (
               <>
                 <MenuItem onClick={loginModal.onOpen} label="Login" />
-                <MenuItem onClick={registerModal.onOpen} label="Sign Up" />
+                <MenuItem onClick={registerModal.onOpen} label="Sign Up" isBold />
               </>
             )}
           </div>

@@ -54,15 +54,23 @@ const Search = () => {
     <div
       onClick={searchModal.onOpen}
       className="
-        border-[1px] 
-        w-full 
-        md:w-auto 
-        py-2 
-        rounded-full 
-        shadow-sm 
-        hover:shadow-md 
-        transition 
+        border-[1px]
+        w-full
+        md:w-auto
+        py-1.5
+        rounded-full
+        bg-white
+        drop-shadow
+        hover:shadow-md
+        hover:drop-shadow-0
+        hover:transition
+        hover:ease-in-out
+        transition
         cursor-pointer
+        lg:absolute
+        lg:left-1/2
+        lg:-translate-x-1/2
+        lg:transition-none
       "
     >
       <div
@@ -75,23 +83,25 @@ const Search = () => {
       >
         <div
           className="
-            text-sm 
-            font-semibold 
+            text-sm
+            font-bold
             px-6
+            truncate
           "
         >
           {locationLabel}
         </div>
         <div
           className="
-            hidden 
-            sm:block 
-            text-sm 
-            font-semibold 
-            px-6 
-            border-x-[1px] 
-            flex-1 
+            hidden
+            sm:block
+            text-sm
+            font-bold
+            px-6
+            border-x-[2px]
+            flex-1
             text-center
+            truncate
           "
         >
           {durationLabel}
@@ -108,7 +118,7 @@ const Search = () => {
             gap-3
           "
         >
-          <div className="hidden sm:block">{guestLabel}</div>
+          <div className="hidden sm:block truncate">{guestLabel}</div>
           <div
             className="
               p-2 

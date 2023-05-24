@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import useRentModal from "@/app/hooks/useRentModal";
 
@@ -86,29 +86,32 @@ const RentModal = () => {
     setStep((value) => value + 1);
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if (step !== STEPS.PRICE) {
-      return onNext();
-    }
+  const onSubmit: SubmitHandler<FieldValues> = useCallback(
+    (data) => {
+      if (step !== STEPS.PRICE) {
+        return onNext();
+      }
 
-    setIsLoading(true);
+      setIsLoading(true);
 
-    axios
-      .post("/api/listings", data)
-      .then(() => {
-        toast.success("Listing created!");
-        router.refresh();
-        reset();
-        setStep(STEPS.CATEGORY);
-        rentModal.onClose();
-      })
-      .catch(() => {
-        toast.error("Something went wrong.");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+      axios
+        .post("/api/listings", data)
+        .then(() => {
+          toast.success("Listing created!");
+          router.refresh();
+          reset();
+          setStep(STEPS.CATEGORY);
+          rentModal.onClose();
+        })
+        .catch(() => {
+          toast.error("Something went wrong.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [router, setIsLoading, rentModal, reset, step]
+  );
 
   const actionLabel = useMemo(() => {
     if (step === STEPS.PRICE) {
@@ -266,6 +269,25 @@ const RentModal = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        handleSubmit(onSubmit)();
+      }
+      if (event.key === "Escape") {
+        event.preventDefault();
+        rentModal.onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleSubmit, onSubmit, rentModal]);
 
   return (
     <Modal

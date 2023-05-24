@@ -4,7 +4,7 @@ import qs from "query-string";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "./Modal";
 import useSearchModal from "@/app/hooks/useSearchModal";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Range } from "react-date-range";
 import dynamic from "next/dynamic";
 import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
@@ -177,6 +177,21 @@ const SearchModal = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        searchModal.onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [searchModal]);
 
   return (
     <Modal

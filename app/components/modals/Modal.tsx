@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 import Button from "../Button";
 
@@ -30,10 +30,32 @@ const Modal: React.FC<ModalProps> = ({
   secondaryActionLabel,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setShowModal(isOpen);
   }, [isOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        handleClose();
+      }
+    };
+
+    if (showModal) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showModal]);
 
   const handleClose = useCallback(() => {
     if (disabled) {
@@ -68,32 +90,41 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <>
+      {/* Dark Overlay */}
       <div
-        className="
-    justify-center 
-    items-center 
-    flex 
-    overflow-x-hidden 
-    overflow-y-auto 
-    fixed 
-    inset-0 
-    z-50 
-    outline-none 
-    focus:outline-none
-    bg-neutral-800/70"
+        className={`
+       flex
+       justify-center
+       items-center
+       overflow-x-hidden
+       overflow-y-auto
+       fixed
+       inset-0
+       z-50
+       outline-none
+       focus:outline-none
+       bg-neutral-800/70
+       backdrop-filter
+       backdrop-blur-sm
+       duration-300
+       transition
+       ${showModal ? "opacity-100" : "opacity-0"}
+   `}
       >
+        {/* Modal */}
         <div
           className="
         relative 
-          w-full
-          md:w-4/6
-          lg:w-3/6
-          xl:w-2/5
-          my-6
-          mx-auto 
-          h-full 
-          lg:h-auto
-          md:h-auto"
+        w-full
+        md:w-4/6
+        lg:w-3/6
+        xl:w-2/5
+        my-6
+        mx-auto 
+        h-full 
+        lg:h-auto
+        md:h-auto"
+          ref={modalRef}
         >
           {/* CONTENT */}
           <div
@@ -106,20 +137,22 @@ const Modal: React.FC<ModalProps> = ({
            `}
           >
             <div
-              className="translate
-            h-full
-            lg:h-auto
-            md:h-auto
-            border-0 
-            rounded-lg 
-            shadow-lg 
-            relative 
-            flex 
-            flex-col 
-            w-full 
-            bg-white 
-            outline-none 
-            focus:outline-none"
+              className="
+              translate
+              h-full
+              lg:h-auto
+              md:h-auto
+              border-0 
+              rounded-lg 
+              shadow-lg 
+              relative 
+              flex 
+              flex-col 
+              w-full 
+              bg-white 
+              outline-none 
+              focus:outline-none
+            "
             >
               {/*header*/}
               <div

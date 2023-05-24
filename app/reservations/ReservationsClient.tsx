@@ -2,7 +2,7 @@
 
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { SafeReservation, SafeUser } from "@/app/types";
@@ -41,6 +41,17 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     },
     [router]
   );
+
+  useEffect(() => {
+    const originalTitle = document.title; // Store the original document title
+
+    document.title = `${currentUser?.name?.split(" ")[0]}'s Reservations`;
+
+    return () => {
+      // Restore the original document title when the component unmounts
+      document.title = originalTitle;
+    };
+  }, [currentUser]);
 
   return (
     <Container>

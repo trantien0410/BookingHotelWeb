@@ -140,7 +140,7 @@ const LoginModal = () => {
           gap-2
         "
         >
-          <div>First time using Airbnb?</div>
+          <div>First time using Vatibnb?</div>
           <div
             onClick={onToggle}
             className="

@@ -82,6 +82,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
             src={data.imageSrc}
             alt="Listing"
             fill
+            sizes="(max-width: 600px) 100vw, 600px"
+            priority
             className="
               object-cover 
               h-full 

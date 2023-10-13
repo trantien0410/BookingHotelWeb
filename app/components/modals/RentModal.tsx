@@ -48,7 +48,7 @@ const RentModal = () => {
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
-      imageSrc: "",
+      images: [],
       price: 1,
       title: "",
       description: "",
@@ -60,7 +60,7 @@ const RentModal = () => {
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
-  const imageSrc = watch("imageSrc");
+  const images = watch("images");
 
   const Map = useMemo(
     () =>
@@ -214,8 +214,16 @@ const RentModal = () => {
           subtitle="Show guests what your place looks like!"
         />
         <ImageUpload
-          onChange={(value) => setCustomValue("imageSrc", value)}
-          value={imageSrc}
+          value={images.map((image: { url: string }) => image.url)}
+          disabled={isLoading}
+          onChange={(url) => setCustomValue("images", [...images, { url }])}
+          onRemove={(url) =>
+            setCustomValue("images", [
+              ...images.filter(
+                (current: { url: string }) => current.url !== url
+              ),
+            ])
+          }
         />
       </div>
     );

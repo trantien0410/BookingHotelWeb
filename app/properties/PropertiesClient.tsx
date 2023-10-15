@@ -54,7 +54,6 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
     };
   }, [currentUser]);
 
-
   return (
     <Container>
       <Heading title="Properties" subtitle="List of your properties" />
@@ -73,6 +72,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
       >
         {listings.map((listing: any) => (
           <ListingCard
+            images={listing.images}
             key={listing.id}
             data={listing}
             actionId={listing.id}

@@ -60,10 +60,10 @@ model Listing {
 model Image {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   listingId String   @db.ObjectId
-  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
   url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
 
 model Reservation {

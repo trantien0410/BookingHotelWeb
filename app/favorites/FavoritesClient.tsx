@@ -4,10 +4,12 @@ import { useEffect } from "react";
 import Container from "../components/Container";
 import Heading from "../components/Heading";
 import ListingCard from "../components/listings/ListingCard";
-import { SafeListing, SafeUser } from "../types";
+import { SafeImage, SafeListing, SafeUser } from "../types";
 
 interface FavoritesClientProps {
-  listings: SafeListing[];
+  listings: SafeListing[] & {
+    images: SafeImage[];
+  };
   currentUser?: SafeUser | null;
 }
 
@@ -30,7 +32,7 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
     <Container>
       <Heading
         title="Favorites"
-        subtitle="List of places you have favorited!"
+        subtitle="List of places you have favorite !"
       />
       <div
         className="
@@ -50,6 +52,7 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
             currentUser={currentUser}
             key={listing.id}
             data={listing}
+            images={listing.images}
           />
         ))}
       </div>

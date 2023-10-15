@@ -54,7 +54,6 @@ const TripsClient: React.FC<TripsClientProps> = ({
     };
   }, [currentUser]);
 
-
   return (
     <Container>
       <Heading
@@ -76,6 +75,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
       >
         {reservations.map((reservation: any) => (
           <ListingCard
+            images={reservation.listing.images}
             key={reservation.id}
             data={reservation.listing}
             reservation={reservation}

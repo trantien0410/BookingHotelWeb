@@ -6,7 +6,7 @@ import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { categories } from "@/app/components/navbar/Categories";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
+import { SafeImage, SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import axios from "axios";
 import { differenceInDays, eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -25,6 +25,7 @@ interface ListingClientProps {
   reservations?: SafeReservation[];
   listing: SafeListing & {
     user: SafeUser;
+    images: SafeImage[];
   };
   currentUser?: SafeUser | null;
 }
@@ -149,7 +150,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         <div className="flex flex-col gap-6">
           <ListingHead
             title={listing.title}
-            imageSrc={listing.imageSrc}
+            images={listing.images}
             locationValue={listing.locationValue}
             id={listing.id}
             currentUser={currentUser}

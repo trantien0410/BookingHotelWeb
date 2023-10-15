@@ -14,6 +14,7 @@ export default async function getListingById(params: IParams) {
       },
       include: {
         user: true,
+        images: true,
       },
     });
 
@@ -30,6 +31,11 @@ export default async function getListingById(params: IParams) {
         updatedAt: listing.user.updatedAt.toString(),
         emailVerified: listing.user.emailVerified?.toString() || null,
       },
+      images: listing.images.map((image) => ({
+        ...image,
+        createdAt: image.createdAt.toISOString(),
+        updatedAt: image.updatedAt.toString(),
+      })),
     };
   } catch (error: any) {
     throw new Error(error);

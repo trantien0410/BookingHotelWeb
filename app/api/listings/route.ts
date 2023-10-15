@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   const {
     title,
     description,
-    imageSrc,
+    images,
     category,
     roomCount,
     bathroomCount,
@@ -33,7 +33,6 @@ export async function POST(request: Request) {
     data: {
       title,
       description,
-      imageSrc,
       category,
       roomCount,
       bathroomCount,
@@ -41,6 +40,11 @@ export async function POST(request: Request) {
       locationValue: location.value,
       price: parseInt(price, 10),
       userId: currentUser.id,
+      images: {
+        createMany: {
+          data: [...images.map((image: { url: string }) => image)],
+        },
+      },
     },
   });
 

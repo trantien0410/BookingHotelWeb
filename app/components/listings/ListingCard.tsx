@@ -1,17 +1,17 @@
 "use client";
 
 import useCountries from "@/app/hooks/useCountries";
-import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
+import {SafeImage, SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { format } from "date-fns";
 import Image from "next/image";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
-
 interface ListingCardProps {
   data: SafeListing;
   reservation?: SafeReservation;
+  images: SafeImage[];
   onAction?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
@@ -21,6 +21,7 @@ interface ListingCardProps {
 const ListingCard: React.FC<ListingCardProps> = ({
   data,
   reservation,
+  images,
   onAction,
   disabled,
   actionLabel,
@@ -79,7 +80,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         "
         >
           <Image
-            src={data.imageSrc}
+            src={images?.[0]?.url}
             alt="Listing"
             fill
             sizes="(max-width: 600px) 100vw, 600px"

@@ -71,6 +71,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
       >
         {reservations.map((reservation: any) => (
           <ListingCard
+            images={reservation.listing.images}
             key={reservation.id}
             data={reservation.listing}
             reservation={reservation}

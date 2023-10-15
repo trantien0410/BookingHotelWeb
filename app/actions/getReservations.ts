@@ -27,7 +27,11 @@ export default async function getReservations(params: IParams) {
     const reservations = await prisma.reservation.findMany({
       where: query,
       include: {
-        listing: true,
+        listing: {
+          include: {
+            images: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -42,6 +46,11 @@ export default async function getReservations(params: IParams) {
       listing: {
         ...reservation.listing,
         createdAt: reservation.listing.createdAt.toISOString(),
+        images: reservation.listing.images.map((image) => ({
+          ...image,
+          createdAt: image.createdAt.toISOString(),
+          updatedAt: image.updatedAt.toString(),
+        })),
       },
     }));
 

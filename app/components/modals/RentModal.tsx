@@ -212,6 +212,8 @@ const RentModal = () => {
         <Heading
           title="Add a photo of your place"
           subtitle="Show guests what your place looks like!"
+          subtitle2="Please choose more than 3 images for your place &
+                      The 1st image will be displayed in homepage."
         />
         <ImageUpload
           value={images.map((image: { url: string }) => image.url)}

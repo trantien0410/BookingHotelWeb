@@ -4,12 +4,10 @@ import { useEffect } from "react";
 import Container from "../components/Container";
 import Heading from "../components/Heading";
 import ListingCard from "../components/listings/ListingCard";
-import { SafeImage, SafeListing, SafeUser } from "../types";
+import { SafeListing, SafeUser } from "../types";
 
 interface FavoritesClientProps {
-  listings: SafeListing[] & {
-    images: SafeImage[];
-  };
+  listings: SafeListing[];
   currentUser?: SafeUser | null;
 }
 

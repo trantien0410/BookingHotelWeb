@@ -1,13 +1,13 @@
 import { Image, Listing, Reservation, User } from "@prisma/client";
 
-export type SafeListing = Omit<Listing, "createdAt"> & {
+export type SafeListing = Omit<Listing, "createdAt" | "images"> & {
   createdAt: string;
+  images: SafeImage[];
 };
 
-export type SafeImage = Omit<Image, "createdAt" | "updatedAt" | "listing"> & {
+export type SafeImage = Omit<Image, "createdAt" | "updatedAt"> & {
   createdAt: string;
   updatedAt: string;
-  listing: SafeListing;
 };
 
 export type SafeReservation = Omit<

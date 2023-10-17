@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Button from "../Button";
 import { BiUpload } from "react-icons/bi";
+import IconButton from "../Icon-Button";
+import { X } from "lucide-react";
 interface ImageUploadProps {
   disabled?: boolean;
   onChange: (value: string) => void;
@@ -43,8 +45,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             key={url}
             className="relative w-[200px] h-[200px] rounded-md overflow-hidden "
           >
-            <div className="z-10 absolute top-2 right-2 h-10 w-5">
-              <Button label=" X " onClick={() => onRemove(url)} />
+            <div className="z-10 absolute top-2 right-2">
+              <IconButton
+                icon={<X size={15} />}
+                onClick={() => onRemove(url)}
+              />
             </div>
             <Image fill className="object-cover" alt="Image" src={url} />
           </div>

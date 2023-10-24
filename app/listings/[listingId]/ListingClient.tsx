@@ -6,11 +6,13 @@ import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { categories } from "@/app/components/navbar/Categories";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { SafeImage, SafeListing, SafeReservation, SafeUser } from "@/app/types";
+import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
+
 import axios from "axios";
-import { differenceInDays, eachDayOfInterval } from "date-fns";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+
+import { differenceInDays, eachDayOfInterval } from "date-fns";
 import { Range } from "react-date-range";
 import toast from "react-hot-toast";
 import { IoDiamondOutline } from "react-icons/io5";
@@ -34,6 +36,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   reservations = [],
   currentUser,
 }) => {
+  const searchParams = useSearchParams();
   const loginModal = useLoginModal();
   const router = useRouter();
 
@@ -83,6 +86,17 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   const newTotal = reCalculateTotal(totalPrice, tax);
 
+  useEffect(() => {
+    if (searchParams?.get("success")) {
+      toast.success("Payment completed successfully.");
+      setDateRange(initialDateRange);
+      router.push("/trips");
+    }
+    if (searchParams?.get("canceled")) {
+      toast.error("Something went wrong.");
+    }
+  }, [searchParams, router]);
+
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen();
@@ -96,10 +110,11 @@ const ListingClient: React.FC<ListingClientProps> = ({
         endDate: dateRange.endDate,
         listingId: listing?.id,
       })
-      .then(() => {
-        toast.success("Listing reserved!");
-        setDateRange(initialDateRange);
-        router.push("/trips");
+      .then((response) => {
+        window.location = response.data.url;
+        // toast.success("Listing reserved!");
+        // setDateRange(initialDateRange);
+        // router.push("/trips");
       })
       .catch(() => {
         toast.error("Something went wrong.");
@@ -107,7 +122,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       .finally(() => {
         setIsLoading(false);
       });
-  }, [newTotal, dateRange, listing?.id, router, currentUser, loginModal]);
+  }, [newTotal, dateRange, listing?.id, currentUser, loginModal]);
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {

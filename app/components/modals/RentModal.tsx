@@ -25,6 +25,7 @@ enum STEPS {
   IMAGES = 3,
   DESCRIPTION = 4,
   PRICE = 5,
+  HYPERLINK = 6,
 }
 
 const RentModal = () => {
@@ -52,6 +53,7 @@ const RentModal = () => {
       price: 1,
       title: "",
       description: "",
+      hyperlink: "",
     },
   });
 
@@ -88,7 +90,7 @@ const RentModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     (data) => {
-      if (step !== STEPS.PRICE) {
+      if (step !== STEPS.HYPERLINK) {
         return onNext();
       }
 
@@ -114,7 +116,7 @@ const RentModal = () => {
   );
 
   const actionLabel = useMemo(() => {
-    if (step === STEPS.PRICE) {
+    if (step === STEPS.HYPERLINK) {
       return "Create";
     }
 
@@ -275,6 +277,23 @@ const RentModal = () => {
           register={register}
           errors={errors}
           required
+        />
+      </div>
+    );
+  }
+  if (step === STEPS.HYPERLINK) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Are you already have your own website?"
+          subtitle="Feel free too add your link here!"
+        />
+        <Input
+          id="hyperlink"
+          label="Hyperlink"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
         />
       </div>
     );

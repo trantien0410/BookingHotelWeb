@@ -14,6 +14,7 @@ export async function POST(request: Request) {
   const {
     title,
     description,
+    hyperlink,
     images,
     category,
     roomCount,
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
     data: {
       title,
       description,
+      hyperlink: hyperlink ?? null,
       category,
       roomCount,
       bathroomCount,

@@ -20,6 +20,7 @@ interface ListingInfoProps {
   guestCount: number;
   roomCount: number;
   bathroomCount: number;
+  hyperlink?: string;
   category:
     | {
         icon: IconType;
@@ -37,6 +38,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   bathroomCount,
   category,
   locationValue,
+  hyperlink,
 }) => {
   const { getByValue } = useCountries();
 
@@ -128,6 +130,40 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           label={category?.label}
           description={category?.description}
         />
+      )}
+      {hyperlink && (
+        <>
+          <hr />
+          <div>
+            <div className="text-xl font-semibold">
+              More experience via our website!
+            </div>
+            <div className="flex flex-cols-1">
+              <a
+                className="
+                    relative
+                    disabled:opacity-70
+                    disabled:cursor-not-allowed
+                    rounded-lg
+                    hover:opacity-80
+                    transition
+                    w-full
+                    bg-white
+                    border-black
+                    text-black
+                    py-2
+                    text-md
+                    font-light
+                    "
+                href={hyperlink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Jump to our page
+              </a>
+            </div>
+          </div>
+        </>
       )}
       <hr className="my-6" />
       <div className="text-xl font-semibold">About this place</div>

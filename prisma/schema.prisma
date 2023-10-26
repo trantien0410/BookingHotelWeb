@@ -44,6 +44,7 @@ model Listing {
   id            String        @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   description   String
+  hyperlink     String?
   createdAt     DateTime      @default(now())
   category      String
   roomCount     Int

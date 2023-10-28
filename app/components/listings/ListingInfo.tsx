@@ -20,7 +20,7 @@ interface ListingInfoProps {
   guestCount: number;
   roomCount: number;
   bathroomCount: number;
-  hyperlink?: string;
+  hyperlink: string | null;
   category:
     | {
         icon: IconType;

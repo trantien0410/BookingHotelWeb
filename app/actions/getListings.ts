@@ -64,10 +64,12 @@ export default async function getListings(params: IListingsParams) {
               {
                 endDate: { gte: startDate },
                 startDate: { lte: endDate },
+                isPaid: true,
               },
               {
                 startDate: { lte: endDate },
                 endDate: { gte: startDate },
+                isPaid: true,
               },
             ],
           },

@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     .join(" ");
 
   if (event.type === "checkout.session.completed") {
-    const reservation = await prisma.reservation.update({
+    await prisma.reservation.update({
       where: {
         id: session?.metadata?.reservationId,
       },

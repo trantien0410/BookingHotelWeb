@@ -10,7 +10,7 @@ export default async function getReservations(params: IParams) {
   try {
     const { listingId, userId, authorId } = params;
 
-    const query: any = {};
+    const query: any = { isPaid: true };
 
     if (listingId) {
       query.listingId = listingId;

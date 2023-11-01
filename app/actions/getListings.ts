@@ -93,9 +93,10 @@ export default async function getListings(params: IListingsParams) {
       include: {
         images: true,
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy:
+        params.minPrice && params.maxPrice
+          ? { price: "asc" }
+          : { createdAt: "desc" },
     });
 
     const safeListings = listings.map((listing) => ({

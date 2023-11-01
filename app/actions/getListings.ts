@@ -9,6 +9,8 @@ export interface IListingsParams {
   endDate?: Date;
   locationValue?: string;
   category?: string;
+  minPrice?: number;
+  maxPrice?: number;
 }
 
 export default async function getListings(params: IListingsParams) {
@@ -22,6 +24,8 @@ export default async function getListings(params: IListingsParams) {
       startDate,
       endDate,
       category,
+      minPrice,
+      maxPrice,
     } = params;
 
     let query: any = {};
@@ -56,6 +60,13 @@ export default async function getListings(params: IListingsParams) {
       query.locationValue = locationValue;
     }
 
+    if (minPrice !== undefined && maxPrice !== undefined) {
+      query.price = {
+        gte: +minPrice,
+        lte: +maxPrice,
+      };
+    }
+
     if (startDate && endDate) {
       query.NOT = {
         reservations: {
@@ -76,6 +87,7 @@ export default async function getListings(params: IListingsParams) {
         },
       };
     }
+
     const listings = await prisma.listing.findMany({
       where: query,
       include: {

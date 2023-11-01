@@ -12,11 +12,13 @@ import { formatISO } from "date-fns";
 import Heading from "../Heading";
 import Calendar from "../inputs/Calendar";
 import Counter from "../inputs/Counter";
+import { Slider } from "antd";
 
 enum STEPS {
   LOCATION = 0,
   DATE = 1,
   INFO = 2,
+  PRICE = 3,
 }
 
 const SearchModal = () => {
@@ -29,6 +31,7 @@ const SearchModal = () => {
   const [guestCount, setGuestCount] = useState(1);
   const [roomCount, setRoomCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
+  const [priceRange, setPriceRange] = useState([20, 50]);
   const [dateRange, setDateRange] = useState<Range>({
     startDate: new Date(),
     endDate: new Date(),
@@ -52,7 +55,7 @@ const SearchModal = () => {
   }, []);
 
   const onSubmit = useCallback(async () => {
-    if (step !== STEPS.INFO) {
+    if (step !== STEPS.PRICE) {
       return onNext();
     }
 
@@ -68,6 +71,8 @@ const SearchModal = () => {
       guestCount,
       roomCount,
       bathroomCount,
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1],
     };
 
     if (dateRange.startDate) {
@@ -100,11 +105,12 @@ const SearchModal = () => {
     dateRange,
     onNext,
     bathroomCount,
+    priceRange,
     params,
   ]);
 
   const actionLabel = useMemo(() => {
-    if (step === STEPS.INFO) {
+    if (step === STEPS.PRICE) {
       return "Search";
     }
     return "Next";
@@ -173,6 +179,25 @@ const SearchModal = () => {
           value={bathroomCount}
           title="Bathrooms"
           subtitle="How many bathrooms do you need?"
+        />
+      </div>
+    );
+  }
+
+  if (step === STEPS.PRICE) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Set your price range"
+          subtitle="Adjust the slider to set your price range"
+        />
+        <Slider
+          range
+          value={priceRange}
+          onChange={(value) => setPriceRange(value)}
+          min={0}
+          max={1000}
+          tipFormatter={value => `$${value}`}
         />
       </div>
     );

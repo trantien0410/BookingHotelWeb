@@ -1,14 +1,10 @@
-"use client";
-
-import useCountries from "@/app/hooks/useCountries";
+// CountrySelect.tsx
 import Select from "react-select";
-import ReactCountryFlag from "react-country-flag";
+import useCountries from "@/app/hooks/useCountries";
+import { useState } from "react";
 
 export type CountrySelectValue = {
-  flag: string;
   label: string;
-  latlng: number[];
-  region: string;
   value: string;
 };
 
@@ -17,47 +13,24 @@ interface CountrySelectProps {
   onChange: (value: CountrySelectValue) => void;
 }
 
-const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
+const CountrySelect: React.FC<CountrySelectProps> = ({ onChange }) => {
   const { getAll } = useCountries();
+  const [selectedCountry, setSelectedCountry] = useState<CountrySelectValue | null>(null);
+
+  const handleCountryChange = (value: CountrySelectValue | null) => {
+    if (value) {
+      setSelectedCountry(value);
+      onChange(value);
+    }
+  };
 
   return (
-    <div>
-      <Select
-        placeholder="Anywhere"
-        isClearable
-        options={getAll()}
-        value={value}
-        onChange={(value) => onChange(value as CountrySelectValue)}
-        formatOptionLabel={(option: any) => (
-          <div className="flex flex-row items-center gap-3">
-            <ReactCountryFlag
-              className="w-[1em] h-[1em]"
-              countryCode={option.value}
-              svg
-              aria-label={option.label}
-            />
-            <div>
-              {option.label},
-              <span className="text-neutral-500"> {option.region}</span>
-            </div>
-          </div>
-        )}
-        classNames={{
-          control: () => "p-3 border-2",
-          input: () => "text-lg",
-          option: () => "text-lg",
-        }}
-        theme={(theme) => ({
-          ...theme,
-          borderRadius: 6,
-          colors: {
-            ...theme.colors,
-            primary: "#636363",
-            primary25: "#ffe4e6",
-          },
-        })}
-      />
-    </div>
+    <Select
+      placeholder="Country"
+      options={getAll()}
+      value={selectedCountry}
+      onChange={handleCountryChange}
+    />
   );
 };
 

@@ -1,11 +1,8 @@
-import countries from "world-countries";
+import { Country, State } from "country-state-city";
 
-const formattedCountries = countries.map((country) => ({
-  value: country.cca2,
-  label: country.name.common,
-  flag: country.flag,
-  latlng: country.latlng,
-  region: country.region,
+const formattedCountries = Country.getAllCountries().map((country) => ({
+  label: country.name,
+  value: country.isoCode,
 }));
 
 const useCountries = () => {
@@ -15,9 +12,18 @@ const useCountries = () => {
     return formattedCountries.find((item) => item.value === value);
   };
 
+  const getStatesByCountry = (countryCode: string) => {
+    return State.getStatesOfCountry(countryCode).map((state) => ({
+      label: state.name,
+      value: state.isoCode,
+    }));
+  };
+
   return {
     getAll,
-    getByValue
-  }
+    getByValue,
+    getStatesByCountry,
+  };
 };
+
 export default useCountries;

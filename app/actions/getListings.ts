@@ -7,7 +7,8 @@ export interface IListingsParams {
   bathroomCount?: number;
   startDate?: Date;
   endDate?: Date;
-  locationValue?: string;
+  countryValue?: string;
+  stateValue?: string;
   category?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -20,7 +21,8 @@ export default async function getListings(params: IListingsParams) {
       roomCount,
       guestCount,
       bathroomCount,
-      locationValue,
+      countryValue,
+      stateValue,
       startDate,
       endDate,
       category,
@@ -56,8 +58,12 @@ export default async function getListings(params: IListingsParams) {
       };
     }
 
-    if (locationValue) {
-      query.locationValue = locationValue;
+    if (countryValue) {
+      query.countryValue = countryValue;
+    }
+
+    if (stateValue) {
+      query.stateValue = stateValue;
     }
 
     if (minPrice !== undefined && maxPrice !== undefined) {

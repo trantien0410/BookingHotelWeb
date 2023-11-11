@@ -142,13 +142,13 @@ const ListingClient: React.FC<ListingClientProps> = ({
   useEffect(() => {
     const originalTitle = document.title; // Store the original document title
 
-    document.title = `${listing.title} - Houses for Rent in ${listing.locationValue} - Vatibnb`;
+    document.title = `${listing.title} - Houses for Rent in ${listing.countryValue} - Vatibnb`;
 
     return () => {
       // Restore the original document title when the component unmounts
       document.title = originalTitle;
     };
-  }, [listing.title, listing.locationValue]);
+  }, [listing.title, listing.countryValue]);
 
   return (
     <Container>
@@ -162,7 +162,9 @@ const ListingClient: React.FC<ListingClientProps> = ({
           <ListingHead
             title={listing.title}
             images={listing.images}
-            locationValue={listing.locationValue}
+            countryValue={listing.countryValue}
+            stateValue={listing.stateValue}
+            detailedAddress={listing.detailedAddress}
             id={listing.id}
             currentUser={currentUser}
           />
@@ -182,7 +184,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               roomCount={listing.roomCount}
               guestCount={listing.guestCount}
               bathroomCount={listing.bathroomCount}
-              locationValue={listing.locationValue}
+              latlng={listing.latlng}
               hyperlink={listing.hyperlink}
             />
             <div

@@ -13,6 +13,8 @@ import Heading from "../Heading";
 import Calendar from "../inputs/Calendar";
 import Counter from "../inputs/Counter";
 import { Slider } from "antd";
+import StateSelect, { StateSelectValue } from "../inputs/StateSelect";
+import { getCoordinates } from "@/app/libs/coordinate";
 
 enum STEPS {
   LOCATION = 0,
@@ -26,7 +28,10 @@ const SearchModal = () => {
   const params = useSearchParams();
   const searchModal = useSearchModal();
 
-  const [location, setLocation] = useState<CountrySelectValue>();
+  const [coordinates, setCoordinates] = useState([0, 0]);
+
+  const [country, setCountry] = useState<CountrySelectValue>();
+  const [state, setState] = useState<StateSelectValue>();
   const [step, setStep] = useState(STEPS.LOCATION);
   const [guestCount, setGuestCount] = useState(1);
   const [roomCount, setRoomCount] = useState(1);
@@ -43,8 +48,18 @@ const SearchModal = () => {
       dynamic(() => import("../Map"), {
         ssr: false,
       }),
-    [location]
+    [country, state]
   );
+
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      const finalAddress = `${state?.label}, ${country?.label}`;
+      const coords = await getCoordinates(finalAddress);
+      setCoordinates(coords);
+    };
+
+    fetchCoordinates();
+  }, [state, country]);
 
   const onBack = useCallback(() => {
     setStep((value) => value - 1);
@@ -67,7 +82,8 @@ const SearchModal = () => {
 
     const updatedQuery: any = {
       ...currentQuery,
-      locationValue: location?.value,
+      countryValue: country?.value,
+      stateValue: state?.value,
       guestCount,
       roomCount,
       bathroomCount,
@@ -98,7 +114,8 @@ const SearchModal = () => {
   }, [
     step,
     searchModal,
-    location,
+    country,
+    state,
     router,
     guestCount,
     roomCount,
@@ -131,11 +148,20 @@ const SearchModal = () => {
         subtitle="Find the perfect location!"
       />
       <CountrySelect
-        value={location}
-        onChange={(value) => setLocation(value as CountrySelectValue)}
+        value={country}
+        onChange={(value) => setCountry(value as CountrySelectValue)}
       />
+      {country && (
+        <StateSelect
+          countryCode={country.value}
+          value={state}
+          onChange={(value) => {
+            setState(value as StateSelectValue);
+          }}
+        />
+      )}
       <hr />
-      <Map center={location?.latlng} />
+      <Map center={coordinates} />
     </div>
   );
 
@@ -197,7 +223,7 @@ const SearchModal = () => {
           onChange={(value) => setPriceRange(value)}
           min={0}
           max={1000}
-          tipFormatter={value => `$${value}`}
+          tipFormatter={(value) => `$${value}`}
         />
       </div>
     );

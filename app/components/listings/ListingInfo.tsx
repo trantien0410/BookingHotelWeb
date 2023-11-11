@@ -1,6 +1,5 @@
 "use client";
 
-import useCountries from "@/app/hooks/useCountries";
 import { SafeUser } from "@/app/types";
 import { IconType } from "react-icons";
 import Avatar from "../Avatar";
@@ -28,7 +27,7 @@ interface ListingInfoProps {
         description: string;
       }
     | undefined;
-  locationValue: string;
+  latlng: number[];
 }
 const ListingInfo: React.FC<ListingInfoProps> = ({
   user,
@@ -37,12 +36,10 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   roomCount,
   bathroomCount,
   category,
-  locationValue,
+  latlng,
   hyperlink,
 }) => {
-  const { getByValue } = useCountries();
-
-  const coordinates = getByValue(locationValue)?.latlng;
+  const coordinates = latlng;
   return (
     <div className="col-span-4 flex flex-col gap-8">
       <div className="flex flex-col gap-2">

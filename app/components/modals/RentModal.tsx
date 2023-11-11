@@ -12,11 +12,14 @@ import useRentModal from "@/app/hooks/useRentModal";
 import Modal from "./Modal";
 import Counter from "../inputs/Counter";
 import CategoryInput from "../inputs/CategoryInput";
-import CountrySelect from "../inputs/CountrySelect";
+import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
+import StateSelect, { StateSelectValue } from "../inputs/StateSelect";
 import { categories } from "../navbar/Categories";
 import ImageUpload from "../inputs/ImageUpload";
 import Input from "../inputs/Input";
 import Heading from "../Heading";
+import { getCoordinates } from "@/app/libs/coordinate";
+import InputLocation from "../inputs/Input-location";
 
 enum STEPS {
   CATEGORY = 0,
@@ -35,6 +38,14 @@ const RentModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(STEPS.CATEGORY);
 
+  const [detailedAddress, setDetailedAddress] = useState("");
+  const [coordinates, setCoordinates] = useState([0, 0]);
+
+  const [country, setCountry] = useState<CountrySelectValue | undefined>(
+    undefined
+  );
+  const [state, setState] = useState<StateSelectValue | undefined>(undefined);
+
   const {
     register,
     handleSubmit,
@@ -45,7 +56,10 @@ const RentModal = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       category: "",
-      location: null,
+      detailedAddress: "",
+      countryValue: null,
+      stateValue: null,
+      latlng: [],
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
@@ -57,7 +71,8 @@ const RentModal = () => {
     },
   });
 
-  const location = watch("location");
+  const countryValue = watch("countryValue");
+  const stateValue = watch("stateValue");
   const category = watch("category");
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
@@ -69,8 +84,21 @@ const RentModal = () => {
       dynamic(() => import("../Map"), {
         ssr: false,
       }),
-    [location]
+    [countryValue, stateValue]
   );
+
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      const finalAddress = `${detailedAddress}, ${stateValue?.label}, ${countryValue?.label}`;
+      const coords = await getCoordinates(
+        finalAddress,
+      );
+      setCoordinates(coords);
+      setValue('latlng', coords);
+    };
+
+    fetchCoordinates();
+  }, [detailedAddress, stateValue, countryValue, setValue]);
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -168,11 +196,34 @@ const RentModal = () => {
           title="Where is your place located?"
           subtitle="Help guests find you!"
         />
-        <CountrySelect
-          value={location}
-          onChange={(value) => setCustomValue("location", value)}
+        <InputLocation
+          id="detailedAddress"
+          label="Detailed Address"
+          disabled={isLoading}
+          value={detailedAddress}
+          onChange={(e) => setDetailedAddress(e.target.value)}
+          register={register}
+          errors={errors}
+          required
         />
-        <Map center={location?.latlng} />
+        <CountrySelect
+          value={country}
+          onChange={(value) => {
+            setCountry(value);
+            setCustomValue("countryValue", value);
+          }}
+        />
+        {country && (
+          <StateSelect
+            countryCode={country.value}
+            value={state}
+            onChange={(value) => {
+              setState(value);
+              setCustomValue("stateValue", value);
+            }}
+          />
+        )}
+        <Map center={coordinates} />
       </div>
     );
   }

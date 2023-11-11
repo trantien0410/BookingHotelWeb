@@ -12,7 +12,9 @@ import { cn } from "@/app/libs/utils";
 
 interface ListingHeadProps {
   title: string;
-  locationValue: string;
+  detailedAddress: string;
+  countryValue: string;
+  stateValue: string
   images: SafeImage[];
   id: string;
   currentUser?: SafeUser | null;
@@ -20,20 +22,25 @@ interface ListingHeadProps {
 
 const ListingHead: React.FC<ListingHeadProps> = ({
   title,
-  locationValue,
+  detailedAddress,
+  countryValue,
+  stateValue,
   images,
   id,
   currentUser,
 }) => {
-  const { getByValue } = useCountries();
+  const { getByValue, getStatesByCountry } = useCountries();
 
-  const location = getByValue(locationValue);
+  const country = getByValue(countryValue);
+  const states = getStatesByCountry(countryValue);
+
+  const state = states.find((state) => state.value === stateValue);
 
   return (
     <>
       <Heading
         title={title}
-        subtitle={`${location?.region}, ${location?.label}`}
+        subtitle={`${detailedAddress}, ${state?.label}, ${country?.label}`}
       />
       <Tab.Group as="div" className="flex flex-col-reverse">
         <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">

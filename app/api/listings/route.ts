@@ -20,7 +20,10 @@ export async function POST(request: Request) {
     roomCount,
     bathroomCount,
     guestCount,
-    location,
+    detailedAddress,
+    latlng,
+    countryValue,
+    stateValue,
     price,
   } = body;
 
@@ -39,7 +42,10 @@ export async function POST(request: Request) {
       roomCount,
       bathroomCount,
       guestCount,
-      locationValue: location.value,
+      detailedAddress,
+      countryValue: countryValue.value,
+      stateValue: stateValue.value,
+      latlng,
       price: parseInt(price, 10),
       userId: currentUser.id,
       images: {

@@ -1,7 +1,7 @@
 "use client";
 
 import useCountries from "@/app/hooks/useCountries";
-import {SafeImage, SafeListing, SafeReservation, SafeUser } from "@/app/types";
+import { SafeImage, SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { format } from "date-fns";
@@ -29,9 +29,12 @@ const ListingCard: React.FC<ListingCardProps> = ({
   currentUser,
 }) => {
   const router = useRouter();
-  const { getByValue } = useCountries();
+  const { getByValue, getStatesByCountry } = useCountries();
 
-  const location = getByValue(data.locationValue);
+  const country = getByValue(data.countryValue);
+  const states = getStatesByCountry(data.countryValue);
+
+  const state = states.find((state) => state.value === data.stateValue);
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,7 +66,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
     return `${format(start, "PP")} - ${format(end, "PP")}`;
   }, [reservation]);
-
   return (
     <div
       className="col-span-1 cursor-pointer group"
@@ -103,7 +105,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
           </div>
         </div>
         <div className="font-semibold text-lg">
-          {location?.region}, {location?.label}
+          {state?.label}, {country?.label}
         </div>
         <div className="font-light text-neutral-500">
           {reservationDate || data.category}

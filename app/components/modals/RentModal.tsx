@@ -89,10 +89,12 @@ const RentModal = () => {
 
   useEffect(() => {
     const fetchCoordinates = async () => {
-      const finalAddress = `${detailedAddress}, ${stateValue?.label}, ${countryValue?.label}`;
-      const coords = await getCoordinates(finalAddress);
-      setCoordinates(coords);
-      setValue("latlng", coords);
+      if (detailedAddress && stateValue && countryValue) {
+        const finalAddress = `${detailedAddress}, ${stateValue?.label}, ${countryValue?.label}`;
+        const coords = await getCoordinates(finalAddress);
+        setCoordinates(coords);
+        setValue("latlng", coords);
+      }
     };
 
     fetchCoordinates();

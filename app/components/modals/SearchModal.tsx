@@ -53,9 +53,11 @@ const SearchModal = () => {
 
   useEffect(() => {
     const fetchCoordinates = async () => {
-      const finalAddress = `${state?.label}, ${country?.label}`;
-      const coords = await getCoordinates(finalAddress);
-      setCoordinates(coords);
+      if (state && country) {
+        const finalAddress = `${state?.label}, ${country?.label}`;
+        const coords = await getCoordinates(finalAddress);
+        setCoordinates(coords);
+      }
     };
 
     fetchCoordinates();

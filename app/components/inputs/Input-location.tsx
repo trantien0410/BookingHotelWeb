@@ -34,6 +34,7 @@ const InputLocation: React.FC<InputLocationProps> = ({
         placeholder=" "
         className={`
           peer
+          h-[7vh]
           w-full
           p-4
           pt-6 

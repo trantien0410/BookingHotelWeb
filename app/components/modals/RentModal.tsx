@@ -90,11 +90,9 @@ const RentModal = () => {
   useEffect(() => {
     const fetchCoordinates = async () => {
       const finalAddress = `${detailedAddress}, ${stateValue?.label}, ${countryValue?.label}`;
-      const coords = await getCoordinates(
-        finalAddress,
-      );
+      const coords = await getCoordinates(finalAddress);
       setCoordinates(coords);
-      setValue('latlng', coords);
+      setValue("latlng", coords);
     };
 
     fetchCoordinates();
@@ -337,7 +335,7 @@ const RentModal = () => {
       <div className="flex flex-col gap-8">
         <Heading
           title="Are you already have your own website?"
-          subtitle="Feel free too add your link here!"
+          subtitle="Feel free to add your link here !"
         />
         <Input
           id="hyperlink"

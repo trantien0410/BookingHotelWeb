@@ -3,6 +3,7 @@ import getListings, { IListingsParams } from "./actions/getListings";
 import ClientOnly from "./components/ClientOnly";
 import Container from "./components/Container";
 import EmptyState from "./components/EmptyState";
+import ScrollToTopButton from "./components/ScrollToTop";
 import ListingCard from "./components/listings/ListingCard";
 
 interface HomeProps {
@@ -34,7 +35,7 @@ const Home = async ({ searchParams }: HomeProps) => {
           3xl:grid-cols-5
           4xl:grid-cols-6
           gap-8
-        "
+          "
         >
           {listings.map((listing: any) => {
             return (
@@ -48,6 +49,7 @@ const Home = async ({ searchParams }: HomeProps) => {
           })}
         </div>
       </Container>
+      <ScrollToTopButton />
     </ClientOnly>
   );
 };

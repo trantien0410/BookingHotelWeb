@@ -36,6 +36,9 @@ export async function POST(request: Request) {
     where: {
       id: listingId,
     },
+    include: {
+      images: true,
+    },
   });
 
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
@@ -47,6 +50,7 @@ export async function POST(request: Request) {
         currency: "USD",
         product_data: {
           name: listing.title,
+          images: listing.images.map((image) => image.url),
         },
         unit_amount: Math.round(totalPrice * 100),
       },

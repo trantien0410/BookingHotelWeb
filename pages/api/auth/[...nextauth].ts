@@ -6,6 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import prisma from "@/app/libs/prismadb";
+import { Role } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -33,7 +34,7 @@ export const authOptions: AuthOptions = {
             email: credentials.email,
           },
         });
-        if (!user || !user?.hashedPassword) {
+        if (!user || !user?.hashedPassword || user.role !== Role.USER) {
           throw new Error("Invalid credentials");
         }
 

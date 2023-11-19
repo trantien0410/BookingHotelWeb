@@ -76,18 +76,6 @@ const Modal: React.FC<ModalProps> = ({
     onSubmit();
   }, [onSubmit, disabled]);
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleSubmit();
-      }
-    };
-
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, [handleSubmit]);
-
   const handleSecondaryAction = useCallback(() => {
     if (disabled || !secondaryAction) {
       return;

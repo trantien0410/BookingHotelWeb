@@ -1,6 +1,7 @@
 "use client";
 
 import Container from "../Container";
+import { MainNav } from "../MainNav";
 import Categories from "./Categories";
 import Logo from "./Logo";
 import Search from "./Search";
@@ -11,9 +12,7 @@ interface NavbarProps {
   currentUser?: SafeUser | null;
 }
 
-const Navbar : React.FC<NavbarProps>= ({
-  currentUser
-}) => {
+const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div
@@ -24,19 +23,13 @@ const Navbar : React.FC<NavbarProps>= ({
         "
       >
         <Container>
-          <div
-            className="
-            flex 
-            flex-row 
-            items-center 
-            justify-between
-            gap-3
-            md:gap-0
-          "
-          >
+          <div className="flex h-16 items-center px-4">
             <Logo />
-            <Search />
-            <UserMenu currentUser={currentUser} />
+            <MainNav className="mx-10" />
+            <div className="ml-auto flex items-center space-x-4">
+              <Search />
+              <UserMenu currentUser={currentUser} />
+            </div>
           </div>
         </Container>
       </div>

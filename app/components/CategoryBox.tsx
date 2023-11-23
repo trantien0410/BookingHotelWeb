@@ -1,7 +1,7 @@
 "use client";
 
 import qs from "query-string";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { IconType } from "react-icons";
 
@@ -22,6 +22,7 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
 }) => {
   const router = useRouter();
   const params = useSearchParams();
+  const pathname = usePathname();
 
   const handleClick = useCallback(() => {
     let currentQuery = {};
@@ -32,21 +33,23 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
 
     const updatedQuery: any = {
       ...currentQuery,
-      category: label,
+      [pathname === "/cars" ? "carCategory" : "category"]: label,
     };
 
-    if (params?.get("category") === label) {
-      delete updatedQuery.category;
+    if (
+      params?.get(pathname === "/cars" ? "carCategory" : "category") === label
+    ) {
+      delete updatedQuery[pathname === "/cars" ? "carCategory" : "category"];
     }
     const url = qs.stringifyUrl(
       {
-        url: "/",
+        url: pathname || "/", // use the current pathname as the url
         query: updatedQuery,
       },
       { skipNull: true }
     );
     router.push(url);
-  }, [label, params, router]);
+  }, [label, params, router, pathname]);
 
   return (
     <div

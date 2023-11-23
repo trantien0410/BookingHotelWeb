@@ -12,13 +12,24 @@ import {
   GiFlowerPot,
   GiForestCamp,
   GiIsland,
+  GiRaceCar,
+  GiScooter,
   GiTreehouse,
   GiWindmill,
 } from "react-icons/gi";
 import { FaSkiing } from "react-icons/fa";
 import { BsSnow, BsWater } from "react-icons/bs";
-import { IoDiamond } from "react-icons/io5";
-import { MdOutlineCabin, MdOutlineVilla } from "react-icons/md";
+import { IoCarSportOutline, IoDiamond } from "react-icons/io5";
+import {
+  MdDirectionsCar,
+  MdOutlineCabin,
+  MdOutlineElectricCar,
+  MdOutlinePedalBike,
+  MdOutlineVilla,
+} from "react-icons/md";
+import { LuCar } from "react-icons/lu";
+import { PiCarProfile } from "react-icons/pi";
+import { LiaTruckPickupSolid } from "react-icons/lia";
 import { HiOutlineHomeModern } from "react-icons/hi2";
 
 import CategoryBox from "../CategoryBox";
@@ -65,7 +76,7 @@ export const categories = [
   {
     label: "Skiing",
     icon: FaSkiing,
-    description: "This property has skiing activies!",
+    description: "This property has skiing activities!",
   },
   {
     label: "Castles",
@@ -148,15 +159,70 @@ export const categories = [
   },
 ];
 
+export const carCategories = [
+  {
+    label: "Sedan",
+    icon: MdDirectionsCar,
+    description: "This car is suitable for small family.",
+  },
+  {
+    label: "SUV",
+    icon: PiCarProfile,
+    description: "This car is suitable for huge family.",
+  },
+  {
+    label: "Sport",
+    icon: IoCarSportOutline,
+    description: "This car is suitable for speedy person.",
+  },
+  {
+    label: "Coupe",
+    icon: GiRaceCar,
+    description:
+      "A coupe is a fixed-roof car with a sloping rear roofline and one or two rows of seats.",
+  },
+  {
+    label: "Pickup Truck",
+    icon: LiaTruckPickupSolid,
+    description:
+      "A pickup truck or pickup is a light-duty truck that has an enclosed cabin.",
+  },
+  {
+    label: "Lux",
+    icon: LuCar,
+    description: "This car is brand new and luxurious!.",
+  },
+  {
+    label: "Electric",
+    icon: MdOutlineElectricCar,
+    description: "This car is fully run by electronic.",
+  },
+  {
+    label: "Bike",
+    icon: MdOutlinePedalBike,
+    description: "This bike is friendly and convenient with environment.",
+  },
+  {
+    label: "Scooter",
+    icon: GiScooter,
+    description: "This scooter is the best opt for moving in city.",
+  },
+];
+
 const Categories = () => {
   const params = useSearchParams();
   const category = params?.get("category");
+  const carCategory = params?.get("carCategory");
   const pathname = usePathname();
-  const isMainPage = pathname === "/";
+  const isMainPage = pathname === "/" || pathname === "/cars";
 
   if (!isMainPage) {
     return null;
   }
+
+  const currentCategories = pathname === "/" ? categories : carCategories;
+
+  const currentParams = pathname === "/" ? category : carCategory;
 
   return (
     <Container categoryContainer>
@@ -172,18 +238,18 @@ const Categories = () => {
           w-full
         "
       >
-        {categories.map((item, index) => (
+        {currentCategories.map((item, index) => (
           <CategoryBox
             key={item.label}
             label={item.label}
             icon={item.icon}
-            selected={category === item.label}
+            selected={currentParams === item.label}
             firstCategory={index === 0}
-            lastCategory={index === categories.length - 1}
+            lastCategory={index === currentCategories.length - 1}
           />
         ))}
       </div>
-      <div
+      {/* <div
         onClick={() => {}}
         className="
                         hidden
@@ -207,7 +273,7 @@ const Categories = () => {
                     "
       >
         <IoMdSwitch size={21} /> Filters
-      </div>
+      </div> */}
     </Container>
   );
 };

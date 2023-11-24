@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import useRentModal from "@/app/hooks/useRentModal";
+import useCarRentModal from "@/app/hooks/useCarRentModal";
 import { signOut } from "next-auth/react";
 import { SafeUser } from "@/app/types";
 import { useRouter } from "next/navigation";
@@ -16,11 +16,11 @@ interface UserMenuProps {
   currentUser?: SafeUser | null;
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+const CarUserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
-  const rentModal = useRentModal();
+  const carRentModal = useCarRentModal();
 
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -29,12 +29,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     setIsOpen((value) => !value);
   }, []);
 
-  const onRent = useCallback(() => {
+  const onCarRent = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen();
     }
-    rentModal.onOpen();
-  }, [loginModal, rentModal, currentUser]);
+
+    carRentModal.onOpen();
+  }, [loginModal, carRentModal, currentUser]);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
@@ -56,7 +57,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     <div className="relative" ref={menuRef}>
       <div className="flex flex-row items-center gap-3">
         <div
-          onClick={onRent}
+          onClick={onCarRent}
           className="
             hidden
             md:block
@@ -72,7 +73,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
             whitespace-nowrap
           "
         >
-          VatiBnb your property
+          VatiBnb your transportation
         </div>
 
         <div
@@ -145,8 +146,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 />
                 <div className="my-2 bg-neutral-200 w-full h-[1px]" />
                 <MenuItem
-                  onClick={rentModal.onOpen}
-                  label="VatiBnb your home"
+                  onClick={carRentModal.onOpen}
+                  label="VatiBnb your car"
                 />
                 <hr />
                 <MenuItem onClick={() => signOut()} label="Logout" />
@@ -168,4 +169,4 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   );
 };
 
-export default UserMenu;
+export default CarUserMenu;

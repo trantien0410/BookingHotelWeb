@@ -14,12 +14,12 @@ import Counter from "../inputs/Counter";
 import CategoryInput from "../inputs/CategoryInput";
 import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
 import StateSelect, { StateSelectValue } from "../inputs/StateSelect";
-import { carCategories } from "../navbar/Categories";
 import ImageUpload from "../inputs/ImageUpload";
 import Input from "../inputs/Input";
 import Heading from "../Heading";
 import { getCoordinates } from "@/app/libs/coordinate";
 import InputLocation from "../inputs/Input-location";
+import { carCategories } from "../navbar/CarCategories";
 
 enum STEPS {
   CATEGORY = 0,
@@ -162,7 +162,7 @@ const CarRentModal = () => {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Which of these best describes your place?"
+        title="Which of these best describes your rental car?"
         subtitle="Pick a category"
       />
       <div

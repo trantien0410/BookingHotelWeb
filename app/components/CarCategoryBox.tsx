@@ -14,7 +14,7 @@ interface CategoryBoxProps {
   lastCategory?: boolean;
 }
 
-const CategoryBox: React.FC<CategoryBoxProps> = ({
+const CarCategoryBox: React.FC<CategoryBoxProps> = ({
   icon: Icon,
   label,
   selected,
@@ -33,16 +33,16 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
 
     const updatedQuery: any = {
       ...currentQuery,
-      category: label,
+      carCategory: label,
     };
 
-    if (params?.get("category") === label) {
-      delete updatedQuery.category;
+    if (params?.get("carCategory") === label) {
+      delete updatedQuery.carCategory;
     }
 
     const url = qs.stringifyUrl(
       {
-        url: "/",
+        url: "/cars",
         query: updatedQuery,
       },
       { skipNull: true }
@@ -87,4 +87,4 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
   );
 };
 
-export default CategoryBox;
+export default CarCategoryBox;

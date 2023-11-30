@@ -11,8 +11,8 @@ import {
   SafeVehicleImage,
   SafeVehicleReservation,
 } from "@/app/types";
-import HeartButton from "@/app/components/HeartButton";
 import Button from "@/app/components/Button";
+import VehicleHeartButton from "@/app/components/VehicleHeartButton";
 interface VehicleListingCardProps {
   data: SafeVehicle;
   reservation?: SafeVehicleReservation;
@@ -74,7 +74,7 @@ const VehicleListingCard: React.FC<VehicleListingCardProps> = ({
   return (
     <div
       className="col-span-1 cursor-pointer group"
-      onClick={() => router.push(`/vehicles/listings/${data.id}`)}
+      onClick={() => router.push(`/cars/vehicleListings/${data.id}`)}
     >
       <div className="flex flex-col gap-2 w-full">
         <div
@@ -106,7 +106,7 @@ const VehicleListingCard: React.FC<VehicleListingCardProps> = ({
             top-4
             right-4"
           >
-            <HeartButton listingId={data.id} currentUser={currentUser} />
+            <VehicleHeartButton vehicleId={data.id} currentUser={currentUser} />
           </div>
         </div>
         <div className="font-semibold text-lg">

@@ -60,9 +60,7 @@ const CarRentModal = () => {
       countryValue: null,
       stateValue: null,
       latlng: [],
-      guestCount: 1,
-      roomCount: 1,
-      bathroomCount: 1,
+      seatCount: 1,
       images: [],
       price: 1,
       title: "",
@@ -73,10 +71,8 @@ const CarRentModal = () => {
 
   const countryValue = watch("countryValue");
   const stateValue = watch("stateValue");
-  const carCategory = watch("carCategory");
-  const guestCount = watch("guestCount");
-  const roomCount = watch("roomCount");
-  const bathroomCount = watch("bathroomCount");
+  const carCategory = watch("category");
+  const seatCount = watch("seatCount");
   const images = watch("images");
 
   const Map = useMemo(
@@ -125,7 +121,7 @@ const CarRentModal = () => {
       setIsLoading(true);
 
       axios
-        .post("/api/listings", data)
+        .post("/api/vehicles/listings", data)
         .then(() => {
           toast.success("Listing created!");
           router.refresh();
@@ -178,9 +174,7 @@ const CarRentModal = () => {
         {carCategories.map((item) => (
           <div key={item.label} className="col-span-1">
             <CategoryInput
-              onClick={(carCategory) =>
-                setCustomValue("carCategory", carCategory)
-              }
+              onClick={(carCategory) => setCustomValue("category", carCategory)}
               selected={carCategory === item.label}
               label={item.label}
               icon={item.icon}
@@ -195,7 +189,7 @@ const CarRentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Where is your place located?"
+          title="Where is your vehicle located?"
           subtitle="Help guests find you!"
         />
         <InputLocation
@@ -234,28 +228,14 @@ const CarRentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Share some basics about your place"
+          title="Share some basics about your vehicle"
           subtitle="What amenities do you have?"
         />
         <Counter
-          onChange={(value) => setCustomValue("guestCount", value)}
-          value={guestCount}
+          onChange={(value) => setCustomValue("seatCount", value)}
+          value={seatCount}
           title="Guests"
           subtitle="How many guests do you allow?"
-        />
-        <hr />
-        <Counter
-          onChange={(value) => setCustomValue("roomCount", value)}
-          value={roomCount}
-          title="Rooms"
-          subtitle="How many rooms do you have?"
-        />
-        <hr />
-        <Counter
-          onChange={(value) => setCustomValue("bathroomCount", value)}
-          value={bathroomCount}
-          title="Bathrooms"
-          subtitle="How many bathrooms do you have?"
         />
       </div>
     );
@@ -319,7 +299,7 @@ const CarRentModal = () => {
       <div className="flex flex-col gap-8">
         <Heading
           title="Now, set your price"
-          subtitle="How much do you charge per night?"
+          subtitle="How much do you charge per day?"
         />
         <Input
           id="price"
@@ -375,7 +355,7 @@ const CarRentModal = () => {
     <Modal
       disabled={isLoading}
       isOpen={carRentModal.isOpen}
-      title="VatiBnb your home!"
+      title="VatiBnb your vehicle!"
       actionLabel={actionLabel}
       onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}

@@ -8,19 +8,21 @@ datasource db {
 }
 
 model User {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String?       @unique
-  emailVerified  DateTime?
-  image          String?
-  role           Role          @default(USER)
-  hashedPassword String?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  favoriteIds    String[]      @db.ObjectId
-  accounts       Account[]
-  listings       Listing[]
-  reservations   Reservation[]
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  name               String?
+  email              String?              @unique
+  emailVerified      DateTime?
+  image              String?
+  role               Role                 @default(USER)
+  hashedPassword     String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  favoriteIds        String[]             @db.ObjectId
+  accounts           Account[]
+  listings           Listing[]
+  reservations       Reservation[]
+  vehicles           Vehicle[]
+  VehicleReservation VehicleReservation[]
 }
 
 enum Role {
@@ -89,4 +91,47 @@ model Reservation {
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Vehicle {
+  id              String               @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String
+  hyperlink       String?
+  createdAt       DateTime             @default(now())
+  category        String
+  seatCount       Int
+  detailedAddress String
+  latlng          Float[]
+  countryValue    String
+  stateValue      String
+  userId          String               @db.ObjectId
+  price           Int
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservations    VehicleReservation[]
+  images          VehicleImage[]
+}
+
+model VehicleImage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  vehicleId String   @db.ObjectId
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+}
+
+model VehicleReservation {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  vehicleId  String   @db.ObjectId
+  startDate  DateTime
+  endDate    DateTime
+  totalPrice Float
+  isPaid     Boolean  @default(false)
+  phone      String   @default("")
+  address    String   @default("")
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 }

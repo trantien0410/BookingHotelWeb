@@ -73,7 +73,7 @@ const CarUserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
             whitespace-nowrap
           "
         >
-          VatiBnb your transportation
+          VatiBnb your vehicle
         </div>
 
         <div
@@ -126,7 +126,7 @@ const CarUserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
               <>
                 <MenuItem
                   onClick={() => router.push("/trips")}
-                  label="My trips"
+                  label="My rental vehicles"
                   isBold
                 />
                 <MenuItem
@@ -141,7 +141,7 @@ const CarUserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 />
                 <MenuItem
                   onClick={() => router.push("/properties")}
-                  label="My properties"
+                  label="My vehicles"
                   isBold
                 />
                 <div className="my-2 bg-neutral-200 w-full h-[1px]" />

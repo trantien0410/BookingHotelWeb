@@ -91,7 +91,7 @@ const VehicleClient: React.FC<ListingClientProps> = ({
     if (searchParams?.get("success")) {
       toast.success("Payment completed successfully.");
       setDateRange(initialDateRange);
-      router.push("/trips");
+      router.push("/cars/rentalVehicles");
     }
     if (searchParams?.get("canceled")) {
       toast.error("Something went wrong.");
@@ -105,7 +105,7 @@ const VehicleClient: React.FC<ListingClientProps> = ({
     setIsLoading(true);
 
     axios
-      .post("/api/reservations", {
+      .post("/api/vehicles/reservations", {
         newTotal,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
@@ -143,7 +143,7 @@ const VehicleClient: React.FC<ListingClientProps> = ({
   useEffect(() => {
     const originalTitle = document.title; // Store the original document title
 
-    document.title = `${vehicle.title} - Houses for Rent in ${vehicle.countryValue} - Vatibnb`;
+    document.title = `${vehicle.title} - Cars for Rent in ${vehicle.countryValue} - Vatibnb`;
 
     return () => {
       // Restore the original document title when the component unmounts
@@ -224,8 +224,8 @@ const VehicleClient: React.FC<ListingClientProps> = ({
                   <strong className="font-semibold">
                     This is a rare find.
                   </strong>{" "}
-                  {vehicle.user.name?.split(" ")[0]}&apos;s vehicle on VatiBnb is
-                  usually fully booked.
+                  {vehicle.user.name?.split(" ")[0]}&apos;s vehicle on VatiBnb
+                  is usually fully booked.
                 </div>
                 <IoDiamondOutline className="text-rose-500 ml-4" size={50} />
               </div>

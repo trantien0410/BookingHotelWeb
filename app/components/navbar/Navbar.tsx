@@ -17,7 +17,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
   const pathname = usePathname();
-  const isCarsPage = pathname === "/cars";
+  const isCarsPage = pathname?.startsWith("/cars");
   return (
     <>
       {isCarsPage ? (

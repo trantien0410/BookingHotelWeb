@@ -30,7 +30,7 @@ const VehicleFavoritesClient: React.FC<VehicleFavoritesClientProps> = ({
     <Container>
       <Heading
         title="Favorites"
-        subtitle="List of places you have favorite !"
+        subtitle="List of vehicles you have favorite !"
       />
       <div
         className="

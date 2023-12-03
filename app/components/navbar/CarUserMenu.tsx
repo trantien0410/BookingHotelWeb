@@ -130,7 +130,7 @@ const CarUserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   isBold
                 />
                 <MenuItem
-                  onClick={() => router.push("/favorites")}
+                  onClick={() => router.push("/cars/favorites")}
                   label="My favorites"
                   isBold
                 />
@@ -140,7 +140,7 @@ const CarUserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   isBold
                 />
                 <MenuItem
-                  onClick={() => router.push("/properties")}
+                  onClick={() => router.push("/cars/properties")}
                   label="My vehicles"
                   isBold
                 />

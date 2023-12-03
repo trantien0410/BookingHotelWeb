@@ -4,20 +4,17 @@ import ClientOnly from "@/app/components/ClientOnly";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import getReservations from "@/app/actions/getReservations";
 
-import TripsClient from "./ReservationsClient";
+import ReservationsClient from "./ReservationsClient";
 
 const ReservationsPage = async () => {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     return (
-      <ClientOnly> 
-        <EmptyState
-          title="Unauthorized"
-          subtitle="Please login"
-        />
+      <ClientOnly>
+        <EmptyState title="Unauthorized" subtitle="Please login" />
       </ClientOnly>
-    )
+    );
   }
 
   const reservations = await getReservations({ authorId: currentUser.id });
@@ -35,12 +32,12 @@ const ReservationsPage = async () => {
 
   return (
     <ClientOnly>
-      <TripsClient
+      <ReservationsClient
         reservations={reservations}
         currentUser={currentUser}
       />
     </ClientOnly>
   );
-}
- 
+};
+
 export default ReservationsPage;

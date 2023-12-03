@@ -135,7 +135,7 @@ const CarUserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   isBold
                 />
                 <MenuItem
-                  onClick={() => router.push("/reservations")}
+                  onClick={() => router.push("/cars/reservations")}
                   label="My reservations"
                   isBold
                 />

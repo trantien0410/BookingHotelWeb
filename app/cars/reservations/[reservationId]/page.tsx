@@ -3,9 +3,9 @@ import ClientOnly from "@/app/components/ClientOnly";
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import getVehicleReservations from "@/app/actions/carActions/getVehicleReservations";
-import RentalVehicleClient from "./RentalVehiclesClient";
+import VehicleReservationsClient from "./VehicleResevationsClient";
 
-const RentalVehiclePage = async () => {
+const ReservationsPage = async () => {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -16,14 +16,16 @@ const RentalVehiclePage = async () => {
     );
   }
 
-  const reservations = await getVehicleReservations({ userId: currentUser.id });
+  const reservations = await getVehicleReservations({
+    authorId: currentUser.id,
+  });
 
   if (reservations.length === 0) {
     return (
       <ClientOnly>
         <EmptyState
-          title="No rental vehicles found"
-          subtitle="Looks like you haven't reserved any rental vehicles."
+          title="No reservations found"
+          subtitle="Looks like you have no reservations on your vehicles."
         />
       </ClientOnly>
     );
@@ -31,7 +33,7 @@ const RentalVehiclePage = async () => {
 
   return (
     <ClientOnly>
-      <RentalVehicleClient
+      <VehicleReservationsClient
         reservations={reservations}
         currentUser={currentUser}
       />
@@ -39,4 +41,4 @@ const RentalVehiclePage = async () => {
   );
 };
 
-export default RentalVehiclePage;
+export default ReservationsPage;

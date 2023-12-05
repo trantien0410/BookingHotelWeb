@@ -58,7 +58,12 @@ const ListingHead: React.FC<ListingHeadProps> = ({
         title={title}
         subtitle={`${detailedAddress}, ${state?.label}, ${country?.label}`}
       />
-      <Tab.Group as="div" className="flex flex-col-reverse">
+      <Tab.Group
+        as="div"
+        className="flex flex-col-reverse"
+        key={currentIndex}
+        defaultIndex={0}
+      >
         <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
           <Tab.List className="grid grid-cols-4 gap-6">
             {images
@@ -113,6 +118,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
                 </Tab>
               ))}
           </Tab.List>
+
           {images.length > 4 && (
             <div className="flex flex-col-1 mt-1">
               <ArrowLeft className="h-5 w-5 ml-auto" onClick={prevImages} />
@@ -120,17 +126,18 @@ const ListingHead: React.FC<ListingHeadProps> = ({
             </div>
           )}
         </div>
+
         <Tab.Panels className="h-full w-full">
-          {images.map((image) => (
+          {images.slice(currentIndex, currentIndex + 4).map((image) => (
             <Tab.Panel key={image.id}>
               <div
                 className="
-                w-full
-                h-[60vh]
-                overflow-hidden 
-                rounded-xl
-                sm:rounded-lg
-                relative"
+                          w-full
+                          h-[60vh]
+                          overflow-hidden 
+                          rounded-xl
+                          sm:rounded-lg
+                          relative"
               >
                 <Image
                   fill
@@ -140,10 +147,10 @@ const ListingHead: React.FC<ListingHeadProps> = ({
                 />
                 <div
                   className="
-                    absolute
-                    top-5
-                    right-5
-                  "
+            absolute
+            top-5
+            right-5
+          "
                 >
                   <HeartButton listingId={id} currentUser={currentUser} />
                 </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import Button from "./Button";
 import Heading from "./Heading";
@@ -17,6 +17,8 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   showReset,
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const isCarsPage = pathname?.startsWith("/cars");
 
   return (
     <div
@@ -31,13 +33,19 @@ const EmptyState: React.FC<EmptyStateProps> = ({
     >
       <Heading center title={title} subtitle={subtitle} />
       <div className="w-48 mt-4">
-        {showReset && (
+        {isCarsPage && showReset ? (
+          <Button
+            outline
+            label="Remove all filters"
+            onClick={() => router.push("/cars")}
+          />
+        ) : showReset ? (
           <Button
             outline
             label="Remove all filters"
             onClick={() => router.push("/")}
           />
-        )}
+        ) : null}
       </div>
     </div>
   );

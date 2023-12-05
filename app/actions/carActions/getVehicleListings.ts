@@ -7,7 +7,7 @@ export interface IVehicleListingsParams {
   endDate?: Date;
   countryValue?: string;
   stateValue?: string;
-  category?: string;
+  carCategory?: string;
   minPrice?: number;
   maxPrice?: number;
 }
@@ -23,7 +23,7 @@ export default async function getVehicleListings(
       stateValue,
       startDate,
       endDate,
-      category,
+      carCategory,
       minPrice,
       maxPrice,
     } = params;
@@ -34,8 +34,8 @@ export default async function getVehicleListings(
       query.userId = userId;
     }
 
-    if (category) {
-      query.category = category;
+    if (carCategory) {
+      query.category = carCategory;
     }
 
     if (seatCount) {

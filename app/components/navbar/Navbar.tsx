@@ -11,6 +11,8 @@ import { SafeUser } from "@/app/types";
 import CarCategories from "./CarCategories";
 import CarUserMenu from "./CarUserMenu";
 import VehicleSearch from "./VehicleSearch";
+import RestaurantCategories from "./RestaurantCategories";
+import RestaurantUserMenu from "./RestaurantUserMenu";
 
 interface NavbarProps {
   currentUser?: SafeUser | null;
@@ -19,6 +21,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
   const pathname = usePathname();
   const isCarsPage = pathname?.startsWith("/cars");
+  const isRestaurantsPage = pathname?.startsWith("/restaurants");
   return (
     <>
       {isCarsPage ? (
@@ -42,6 +45,28 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
             </Container>
           </div>
           <CarCategories />
+        </div>
+      ) : isRestaurantsPage ? (
+        <div className="fixed w-full bg-white z-10 shadow-sm">
+          <div
+            className="
+        py-4 
+        border-b-[1px]
+        max-h-[85px]
+        "
+          >
+            <Container>
+              <div className="flex h-16 items-center px-4">
+                <Logo />
+                <MainNav className="mx-10" />
+                <div className="ml-auto flex items-center space-x-4">
+                  <Search />
+                  <RestaurantUserMenu currentUser={currentUser} />
+                </div>
+              </div>
+            </Container>
+          </div>
+          <RestaurantCategories />
         </div>
       ) : (
         <div className="fixed w-full bg-white z-10 shadow-sm">

@@ -21,6 +21,11 @@ export function MainNav({
       label: "Car Rentals",
       active: pathname === "/cars",
     },
+    {
+      href: "/restaurants",
+      label: "Restaurants",
+      active: pathname === "/restaurants",
+    },
   ];
   return (
     <nav

@@ -11,6 +11,7 @@ import RentModal from "./components/modals/RentModal";
 import SearchModal from "./components/modals/SearchModal";
 import CarRentModal from "./components/modals/CarRentModal";
 import VehicleSearchModal from "./components/modals/VehicleSearchModal";
+import RestaurantRentModal from "./components/modals/RestaurantRentModal";
 
 export const metadata = {
   title: "VatiBnb",
@@ -36,6 +37,7 @@ export default async function RootLayout({
           <VehicleSearchModal />
           <RentModal />
           <CarRentModal />
+          <RestaurantRentModal />
           <LoginModal />
           <RegisterModal />
           <Navbar currentUser={currentUser} />

@@ -4,7 +4,7 @@ import Button from "@/app/components/Button";
 import Calendar from "@/app/components/inputs/Calendar";
 import { Range } from "react-date-range";
 
-interface VehicleListingReservationProps {
+interface RestaurantListingReservationProps {
   price: number;
   dateRange: Range;
   totalPerNight: number;
@@ -18,7 +18,9 @@ interface VehicleListingReservationProps {
   tax: number;
 }
 
-const VehicleListingReservation: React.FC<VehicleListingReservationProps> = ({
+const RestaurantListingReservation: React.FC<
+  RestaurantListingReservationProps
+> = ({
   price,
   dateRange,
   totalPerNight,
@@ -46,7 +48,7 @@ const VehicleListingReservation: React.FC<VehicleListingReservationProps> = ({
     >
       <div className="flex flex-row items-center gap-1 p-4">
         <div className="text-2xl font-semibold">${price}</div>
-        <div className="font-light next-neutral-600">day</div>
+        <div className="font-light next-neutral-600">meal</div>
       </div>
       {/* <hr /> */}
       <Calendar
@@ -93,4 +95,4 @@ const VehicleListingReservation: React.FC<VehicleListingReservationProps> = ({
   );
 };
 
-export default VehicleListingReservation;
+export default RestaurantListingReservation;

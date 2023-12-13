@@ -245,9 +245,9 @@ const CarRentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Add a photo of your place"
-          subtitle="Show guests what your place looks like!"
-          subtitle2="Please choose more than 4 images for your place &
+          title="Add a photo of your vehicle"
+          subtitle="Show guests what your vehicle looks like!"
+          subtitle2="Please choose more than 4 images for your vehicle &
                       The 1st image will be displayed in homepage."
         />
         <ImageUpload

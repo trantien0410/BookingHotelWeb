@@ -60,7 +60,7 @@ const RestaurantRentModal = () => {
       countryValue: null,
       stateValue: null,
       latlng: [],
-      seatCount: 1,
+      guessCount: 1,
       images: [],
       price: 1,
       title: "",
@@ -72,7 +72,7 @@ const RestaurantRentModal = () => {
   const countryValue = watch("countryValue");
   const stateValue = watch("stateValue");
   const restaurantCategory = watch("category");
-  const seatCount = watch("seatCount");
+  const guessCount = watch("guessCount");
   const images = watch("images");
 
   const Map = useMemo(
@@ -121,9 +121,9 @@ const RestaurantRentModal = () => {
       setIsLoading(true);
 
       axios
-        .post("/api/vehicles/listings", data)
+        .post("/api/restaurants/listings", data)
         .then(() => {
-          toast.success("Listing created!");
+          toast.success("Restaurants created!");
           router.refresh();
           reset();
           setStep(STEPS.CATEGORY);
@@ -158,7 +158,7 @@ const RestaurantRentModal = () => {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Which of these best describes your rental car?"
+        title="Which of these best describes your restaurants?"
         subtitle="Pick a category"
       />
       <div
@@ -191,7 +191,7 @@ const RestaurantRentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Where is your vehicle located?"
+          title="Where is your restaurant located?"
           subtitle="Help guests find you!"
         />
         <InputLocation
@@ -230,12 +230,12 @@ const RestaurantRentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Share some basics about your vehicle"
+          title="Share some basics about your restaurant"
           subtitle="What amenities do you have?"
         />
         <Counter
-          onChange={(value) => setCustomValue("seatCount", value)}
-          value={seatCount}
+          onChange={(value) => setCustomValue("guessCount", value)}
+          value={guessCount}
           title="Guests"
           subtitle="How many guests do you allow?"
         />
@@ -247,9 +247,9 @@ const RestaurantRentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Add a photo of your place"
-          subtitle="Show guests what your place looks like!"
-          subtitle2="Please choose more than 4 images for your place &
+          title="Add a photo of your restaurant"
+          subtitle="Show guests what your restaurant looks like!"
+          subtitle2="Please choose more than 4 images for your restaurant &
                       The 1st image will be displayed in homepage."
         />
         <ImageUpload
@@ -272,7 +272,7 @@ const RestaurantRentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="How would you describe your place?"
+          title="How would you describe your restaurant?"
           subtitle="Short and sweet works best!"
         />
         <Input
@@ -301,7 +301,7 @@ const RestaurantRentModal = () => {
       <div className="flex flex-col gap-8">
         <Heading
           title="Now, set your price"
-          subtitle="How much do you charge per day?"
+          subtitle="How much do you charge per meal?"
         />
         <Input
           id="price"
@@ -357,7 +357,7 @@ const RestaurantRentModal = () => {
     <Modal
       disabled={isLoading}
       isOpen={restaurantRentModal.isOpen}
-      title="VatiBnb your vehicle!"
+      title="VatiBnb your restaurant!"
       actionLabel={actionLabel}
       onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}

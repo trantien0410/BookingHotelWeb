@@ -2,7 +2,11 @@
 
 import Container from "@/app/components/Container";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { SafeUser, SafeVehicle, SafeVehicleReservation } from "@/app/types";
+import {
+  SafeRestaurant,
+  SafeRestaurantReservation,
+  SafeUser,
+} from "@/app/types";
 
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -12,10 +16,10 @@ import { differenceInDays, eachDayOfInterval } from "date-fns";
 import { Range } from "react-date-range";
 import toast from "react-hot-toast";
 import { IoDiamondOutline } from "react-icons/io5";
-import VehicleListingHead from "../../components/VehicleListingHead";
-import VehicleListingInfo from "../../components/VehicleListingInfo";
-import VehicleListingReservation from "../../components/VehicleListingReservation";
-import { carCategories } from "@/app/components/navbar/CarCategories";
+import { restaurantCategories } from "@/app/components/navbar/RestaurantCategories";
+import RestaurantListingHead from "../../components/RestaurantListingHead";
+import RestaurantListingInfo from "../../components/RestaurantListingInfo";
+import RestaurantListingReservation from "../../components/RestaurantListingReservation";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -24,15 +28,15 @@ const initialDateRange = {
 };
 
 interface ListingClientProps {
-  reservations?: SafeVehicleReservation[];
-  vehicle: SafeVehicle & {
+  reservations?: SafeRestaurantReservation[];
+  restaurant: SafeRestaurant & {
     user: SafeUser;
   };
   currentUser?: SafeUser | null;
 }
 
-const VehicleClient: React.FC<ListingClientProps> = ({
-  vehicle,
+const RestaurantClient: React.FC<ListingClientProps> = ({
+  restaurant,
   reservations = [],
   currentUser,
 }) => {
@@ -41,7 +45,7 @@ const VehicleClient: React.FC<ListingClientProps> = ({
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(vehicle.price);
+  const [totalPrice, setTotalPrice] = useState(restaurant.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
   const [daysCount, setDaysCount] = useState(1);
   const [tax, setTax] = useState<number>(0);
@@ -108,7 +112,7 @@ const VehicleClient: React.FC<ListingClientProps> = ({
         newTotal,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
-        vehicleId: vehicle?.id,
+        restaurantId: restaurant?.id,
       })
       .then((response) => {
         window.location = response.data.url;
@@ -119,7 +123,7 @@ const VehicleClient: React.FC<ListingClientProps> = ({
       .finally(() => {
         setIsLoading(false);
       });
-  }, [newTotal, dateRange, vehicle?.id, currentUser, loginModal]);
+  }, [newTotal, dateRange, restaurant?.id, currentUser, loginModal]);
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
@@ -127,28 +131,30 @@ const VehicleClient: React.FC<ListingClientProps> = ({
 
       setDaysCount(dayCount);
 
-      if (dayCount && vehicle.price) {
-        setTotalPrice(dayCount * vehicle.price);
+      if (dayCount && restaurant.price) {
+        setTotalPrice(dayCount * restaurant.price);
       } else {
-        setTotalPrice(vehicle.price);
+        setTotalPrice(restaurant.price);
       }
     }
-  }, [dateRange, vehicle.price]);
+  }, [dateRange, restaurant.price]);
 
   const category = useMemo(() => {
-    return carCategories.find((items) => items.label === vehicle.category);
-  }, [vehicle.category]);
+    return restaurantCategories.find(
+      (items) => items.label === restaurant.category
+    );
+  }, [restaurant.category]);
 
   useEffect(() => {
     const originalTitle = document.title; // Store the original document title
 
-    document.title = `${vehicle.title} - Cars for Rent in ${vehicle.countryValue} - Vatibnb`;
+    document.title = `${restaurant.title} - Restaurant for Booking in ${restaurant.countryValue} - Vatibnb`;
 
     return () => {
       // Restore the original document title when the component unmounts
       document.title = originalTitle;
     };
-  }, [vehicle.title, vehicle.countryValue]);
+  }, [restaurant.title, restaurant.countryValue]);
 
   return (
     <Container>
@@ -159,13 +165,13 @@ const VehicleClient: React.FC<ListingClientProps> = ({
         "
       >
         <div className="flex flex-col gap-6">
-          <VehicleListingHead
-            title={vehicle.title}
-            images={vehicle.images}
-            countryValue={vehicle.countryValue}
-            stateValue={vehicle.stateValue}
-            detailedAddress={vehicle.detailedAddress}
-            id={vehicle.id}
+          <RestaurantListingHead
+            title={restaurant.title}
+            images={restaurant.images}
+            countryValue={restaurant.countryValue}
+            stateValue={restaurant.stateValue}
+            detailedAddress={restaurant.detailedAddress}
+            id={restaurant.id}
             currentUser={currentUser}
           />
           <div
@@ -177,13 +183,13 @@ const VehicleClient: React.FC<ListingClientProps> = ({
               mt-6
             "
           >
-            <VehicleListingInfo
-              user={vehicle.user}
+            <RestaurantListingInfo
+              user={restaurant.user}
               category={category}
-              description={vehicle.description}
-              seatCount={vehicle.seatCount}
-              latlng={vehicle.latlng}
-              hyperlink={vehicle.hyperlink}
+              description={restaurant.description}
+              guessCount={restaurant.guessCount}
+              latlng={restaurant.latlng}
+              hyperlink={restaurant.hyperlink}
             />
             <div
               className="
@@ -193,8 +199,8 @@ const VehicleClient: React.FC<ListingClientProps> = ({
                 md:col-span-3
               "
             >
-              <VehicleListingReservation
-                price={vehicle.price}
+              <RestaurantListingReservation
+                price={restaurant.price}
                 totalPerNight={totalPrice}
                 totalPrice={newTotal}
                 onChangeDate={(value) => setDateRange(value)}
@@ -223,8 +229,8 @@ const VehicleClient: React.FC<ListingClientProps> = ({
                   <strong className="font-semibold">
                     This is a rare find.
                   </strong>{" "}
-                  {vehicle.user.name?.split(" ")[0]}&apos;s vehicle on VatiBnb
-                  is usually fully booked.
+                  {restaurant.user.name?.split(" ")[0]}&apos;s restaurant on
+                  VatiBnb is usually fully booked.
                 </div>
                 <IoDiamondOutline className="text-rose-500 ml-4" size={50} />
               </div>
@@ -236,4 +242,4 @@ const VehicleClient: React.FC<ListingClientProps> = ({
   );
 };
 
-export default VehicleClient;
+export default RestaurantClient;

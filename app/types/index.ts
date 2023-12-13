@@ -2,6 +2,9 @@ import {
   Image,
   Listing,
   Reservation,
+  Restaurant,
+  RestaurantImage,
+  RestaurantReservation,
   User,
   Vehicle,
   VehicleImage,
@@ -45,6 +48,28 @@ export type SafeVehicleReservation = Omit<
   startDate: string;
   endDate: string;
   vehicle: SafeVehicle;
+};
+export type SafeRestaurant = Omit<Restaurant, "createdAt" | "images"> & {
+  createdAt: string;
+  images: SafeRestaurantImage[];
+};
+
+export type SafeRestaurantImage = Omit<
+  RestaurantImage,
+  "createdAt" | "updatedAt"
+> & {
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type SafeRestaurantReservation = Omit<
+  RestaurantReservation,
+  "createdAt" | "startDate" | "endDate" | "restaurant"
+> & {
+  createdAt: string;
+  startDate: string;
+  endDate: string;
+  restaurant: SafeRestaurant;
 };
 
 export type SafeUser = Omit<

@@ -10,5 +10,9 @@ export const config = {
     "/cars/reservations",
     "/cars/properties",
     "/cars/favorites",
+    "/restaurants/bookingRestaurants",
+    "/restaurants/reservations",
+    "/restaurants/properties",
+    "/restaurants/favorites",
   ],
 };

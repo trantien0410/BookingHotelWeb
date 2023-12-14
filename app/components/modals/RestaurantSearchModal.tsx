@@ -14,7 +14,7 @@ import Counter from "../inputs/Counter";
 import { Slider } from "antd";
 import StateSelect, { StateSelectValue } from "../inputs/StateSelect";
 import { getCoordinates } from "@/app/libs/coordinate";
-import useVehicleSearchModal from "@/app/hooks/useVehicleSearchModal";
+import useRestaurantSearchModal from "@/app/hooks/useRestaurantSearchModal";
 
 enum STEPS {
   LOCATION = 0,
@@ -23,17 +23,17 @@ enum STEPS {
   PRICE = 3,
 }
 
-const VehicleSearchModal = () => {
+const RestaurantSearchModal = () => {
   const router = useRouter();
   const params = useSearchParams();
-  const vehicleSearchModal = useVehicleSearchModal();
+  const restaurantSearchModal = useRestaurantSearchModal();
 
   const [coordinates, setCoordinates] = useState([0, 0]);
 
   const [country, setCountry] = useState<CountrySelectValue>();
   const [state, setState] = useState<StateSelectValue>();
   const [step, setStep] = useState(STEPS.LOCATION);
-  const [seatCount, setSeatCount] = useState(1);
+  const [guessCount, setGuessCount] = useState(1);
   const [priceRange, setPriceRange] = useState([20, 50]);
   const [dateRange, setDateRange] = useState<Range>({
     startDate: new Date(),
@@ -84,7 +84,7 @@ const VehicleSearchModal = () => {
       ...currentQuery,
       countryValue: country?.value,
       stateValue: state?.value,
-      seatCount,
+      guessCount,
       minPrice: priceRange[0],
       maxPrice: priceRange[1],
     };
@@ -99,23 +99,23 @@ const VehicleSearchModal = () => {
 
     const url = qs.stringifyUrl(
       {
-        url: "/cars",
+        url: "/restaurants",
         query: updatedQuery,
       },
       { skipNull: true }
     );
 
     setStep(STEPS.LOCATION);
-    vehicleSearchModal.onClose();
+    restaurantSearchModal.onClose();
 
     router.push(url);
   }, [
     step,
-    vehicleSearchModal,
+    restaurantSearchModal,
     country,
     state,
     router,
-    seatCount,
+    guessCount,
     dateRange,
     onNext,
     priceRange,
@@ -140,7 +140,7 @@ const VehicleSearchModal = () => {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Where do you wanna rent?"
+        title="Where do you wanna have a meal ?"
         subtitle="Find the perfect location!"
       />
       <CountrySelect
@@ -165,7 +165,7 @@ const VehicleSearchModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="When do you plan to rent?"
+          title="When do you plan to have a meal ?"
           subtitle="Make sure everyone is free!"
         />
         <Calendar
@@ -179,11 +179,14 @@ const VehicleSearchModal = () => {
   if (step === STEPS.INFO) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Heading title="More information" subtitle="Find your perfect vehicle!" />
+        <Heading
+          title="More information"
+          subtitle="Find your perfect restaurant!"
+        />
         <Counter
-          onChange={(value) => setSeatCount(value)}
-          value={seatCount}
-          title="Seats"
+          onChange={(value) => setGuessCount(value)}
+          value={guessCount}
+          title="Guess"
           subtitle="How many guests are coming?"
         />
       </div>
@@ -213,7 +216,7 @@ const VehicleSearchModal = () => {
     const handleKeyDown = (event: any) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        vehicleSearchModal.onClose();
+        restaurantSearchModal.onClose();
       }
     };
 
@@ -222,12 +225,12 @@ const VehicleSearchModal = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [vehicleSearchModal]);
+  }, [restaurantSearchModal]);
 
   return (
     <Modal
-      isOpen={vehicleSearchModal.isOpen}
-      onClose={vehicleSearchModal.onClose}
+      isOpen={restaurantSearchModal.isOpen}
+      onClose={restaurantSearchModal.onClose}
       onSubmit={onSubmit}
       title="Filter"
       actionLabel={actionLabel}
@@ -238,4 +241,4 @@ const VehicleSearchModal = () => {
   );
 };
 
-export default VehicleSearchModal;
+export default RestaurantSearchModal;

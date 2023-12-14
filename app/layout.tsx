@@ -12,10 +12,11 @@ import SearchModal from "./components/modals/SearchModal";
 import CarRentModal from "./components/modals/CarRentModal";
 import VehicleSearchModal from "./components/modals/VehicleSearchModal";
 import RestaurantRentModal from "./components/modals/RestaurantRentModal";
+import RestaurantSearchModal from "./components/modals/RestaurantSearchModal";
 
 export const metadata = {
   title: "VatiBnb",
-  description: "VatiBnb your home!",
+  description: "VatiBnb your service!",
 };
 
 const font = Nunito({
@@ -35,6 +36,7 @@ export default async function RootLayout({
           <ToasterProvider />
           <SearchModal />
           <VehicleSearchModal />
+          <RestaurantSearchModal />
           <RentModal />
           <CarRentModal />
           <RestaurantRentModal />

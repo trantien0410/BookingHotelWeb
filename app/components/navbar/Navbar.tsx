@@ -13,6 +13,7 @@ import CarUserMenu from "./CarUserMenu";
 import VehicleSearch from "./VehicleSearch";
 import RestaurantCategories from "./RestaurantCategories";
 import RestaurantUserMenu from "./RestaurantUserMenu";
+import RestaurantSearch from "./RestaurantSearch";
 
 interface NavbarProps {
   currentUser?: SafeUser | null;
@@ -60,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
                 <Logo />
                 <MainNav className="mx-10" />
                 <div className="ml-auto flex items-center space-x-4">
-                  <Search />
+                  <RestaurantSearch />
                   <RestaurantUserMenu currentUser={currentUser} />
                 </div>
               </div>

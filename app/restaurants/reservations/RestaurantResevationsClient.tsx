@@ -5,20 +5,19 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { SafeUser, SafeVehicleReservation } from "@/app/types";
+import { SafeRestaurantReservation, SafeUser } from "@/app/types";
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
-import VehicleListingCard from "../components/VehicleListingCard";
+import RestaurantListingCard from "../components/RestaurantListingCard";
 
-interface VehicleReservationsClientProps {
-  reservations: SafeVehicleReservation[];
+interface RestaurantReservationsClientProps {
+  reservations: SafeRestaurantReservation[];
   currentUser?: SafeUser | null;
 }
 
-const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
-  reservations,
-  currentUser,
-}) => {
+const RestaurantReservationsClient: React.FC<
+  RestaurantReservationsClientProps
+> = ({ reservations, currentUser }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
 
@@ -55,7 +54,7 @@ const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
 
   return (
     <Container>
-      <Heading title="Reservations" subtitle="Bookings on your vehicles" />
+      <Heading title="Reservations" subtitle="Bookings on your restaurants" />
       <div
         className="
           mt-10
@@ -70,10 +69,10 @@ const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
         "
       >
         {reservations.map((reservation: any) => (
-          <VehicleListingCard
-            images={reservation.vehicle.images}
+          <RestaurantListingCard
+            images={reservation.restaurant.images}
             key={reservation.id}
-            data={reservation.vehicle}
+            data={reservation.restaurant}
             reservation={reservation}
             actionId={reservation.id}
             onAction={onCancel}
@@ -87,4 +86,4 @@ const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
   );
 };
 
-export default VehicleReservationsClient;
+export default RestaurantReservationsClient;

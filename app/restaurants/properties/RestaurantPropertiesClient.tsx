@@ -5,35 +5,36 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { SafeUser, SafeVehicleReservation } from "@/app/types";
+import { SafeRestaurant, SafeUser } from "@/app/types";
+
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
-import VehicleListingCard from "../components/VehicleListingCard";
+import RestaurantListingCard from "../components/RestaurantListingCard";
 
-interface VehicleReservationsClientProps {
-  reservations: SafeVehicleReservation[];
+interface RestaurantPropertiesClientProps {
+  restaurants: SafeRestaurant[];
   currentUser?: SafeUser | null;
 }
 
-const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
-  reservations,
+const RestaurantPropertiesClient: React.FC<RestaurantPropertiesClientProps> = ({
+  restaurants,
   currentUser,
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
 
-  const onCancel = useCallback(
+  const onDelete = useCallback(
     (id: string) => {
       setDeletingId(id);
 
       axios
-        .delete(`/api/restaurants/reservations/${id}`)
+        .delete(`/api/restaurants/listings/${id}`)
         .then(() => {
-          toast.success("Reservation canceled");
+          toast.success("Restaurants deleted");
           router.refresh();
         })
-        .catch(() => {
-          toast.error("Something went wrong.");
+        .catch((error) => {
+          toast.error(error?.response?.data?.error);
         })
         .finally(() => {
           setDeletingId("");
@@ -45,7 +46,7 @@ const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
   useEffect(() => {
     const originalTitle = document.title; // Store the original document title
 
-    document.title = `${currentUser?.name?.split(" ")[0]}'s Reservations`;
+    document.title = `${currentUser?.name?.split(" ")[0]}'s Restaurants`;
 
     return () => {
       // Restore the original document title when the component unmounts
@@ -55,7 +56,7 @@ const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
 
   return (
     <Container>
-      <Heading title="Reservations" subtitle="Bookings on your vehicles" />
+      <Heading title="Restaurants" subtitle="List of your restaurants" />
       <div
         className="
           mt-10
@@ -69,16 +70,15 @@ const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
           gap-8
         "
       >
-        {reservations.map((reservation: any) => (
-          <VehicleListingCard
-            images={reservation.vehicle.images}
-            key={reservation.id}
-            data={reservation.vehicle}
-            reservation={reservation}
-            actionId={reservation.id}
-            onAction={onCancel}
-            disabled={deletingId === reservation.id}
-            actionLabel="Cancel guest reservation"
+        {restaurants.map((restaurant: any) => (
+          <RestaurantListingCard
+            images={restaurant.images}
+            key={restaurant.id}
+            data={restaurant}
+            actionId={restaurant.id}
+            onAction={onDelete}
+            disabled={deletingId === restaurant.id}
+            actionLabel="Delete restaurant"
             currentUser={currentUser}
           />
         ))}
@@ -87,4 +87,4 @@ const VehicleReservationsClient: React.FC<VehicleReservationsClientProps> = ({
   );
 };
 
-export default VehicleReservationsClient;
+export default RestaurantPropertiesClient;

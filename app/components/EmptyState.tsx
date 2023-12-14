@@ -19,6 +19,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const isCarsPage = pathname?.startsWith("/cars");
+  const isRestaurantsPage = pathname?.startsWith("/restaurants");
 
   return (
     <div
@@ -38,6 +39,12 @@ const EmptyState: React.FC<EmptyStateProps> = ({
             outline
             label="Remove all filters"
             onClick={() => router.push("/cars")}
+          />
+        ) : isRestaurantsPage && showReset ? (
+          <Button
+            outline
+            label="Remove all filters"
+            onClick={() => router.push("/restaurants")}
           />
         ) : showReset ? (
           <Button

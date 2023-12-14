@@ -5,18 +5,18 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { SafeUser, SafeVehicleReservation } from "@/app/types";
+import { SafeRestaurantReservation, SafeUser } from "@/app/types";
 
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
-import VehicleListingCard from "../components/VehicleListingCard";
+import RestaurantListingCard from "../components/RestaurantListingCard";
 
-interface RentalVehicleClientProps {
-  reservations: SafeVehicleReservation[];
+interface BookingRestaurantClientProps {
+  reservations: SafeRestaurantReservation[];
   currentUser?: SafeUser | null;
 }
 
-const RentalVehicleClient: React.FC<RentalVehicleClientProps> = ({
+const BookingRestaurantClient: React.FC<BookingRestaurantClientProps> = ({
   reservations,
   currentUser,
 }) => {
@@ -28,7 +28,7 @@ const RentalVehicleClient: React.FC<RentalVehicleClientProps> = ({
       setDeletingId(id);
 
       axios
-        .delete(`/api/vehicles/reservations/${id}`)
+        .delete(`/api/restaurants/reservations/${id}`)
         .then(() => {
           toast.success("Reservation cancelled");
           router.refresh();
@@ -46,7 +46,9 @@ const RentalVehicleClient: React.FC<RentalVehicleClientProps> = ({
   useEffect(() => {
     const originalTitle = document.title; // Store the original document title
 
-    document.title = `${currentUser?.name?.split(" ")[0]}'s Rental Vehicles`;
+    document.title = `${
+      currentUser?.name?.split(" ")[0]
+    }'s Booking Restaurants`;
 
     return () => {
       // Restore the original document title when the component unmounts
@@ -57,8 +59,8 @@ const RentalVehicleClient: React.FC<RentalVehicleClientProps> = ({
   return (
     <Container>
       <Heading
-        title="Rental Vehicles"
-        subtitle="What you've hired and where you're go to rent"
+        title="Booked Restaurants"
+        subtitle="What you've booked and where you're going"
       />
       <div
         className="
@@ -74,10 +76,10 @@ const RentalVehicleClient: React.FC<RentalVehicleClientProps> = ({
         "
       >
         {reservations.map((reservation: any) => (
-          <VehicleListingCard
-            images={reservation.vehicle.images}
+          <RestaurantListingCard
+            images={reservation.restaurant.images}
             key={reservation.id}
-            data={reservation.vehicle}
+            data={reservation.restaurant}
             reservation={reservation}
             actionId={reservation.id}
             onAction={onCancel}
@@ -91,4 +93,4 @@ const RentalVehicleClient: React.FC<RentalVehicleClientProps> = ({
   );
 };
 
-export default RentalVehicleClient;
+export default BookingRestaurantClient;

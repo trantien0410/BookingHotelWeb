@@ -94,7 +94,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
     if (searchParams?.get("success")) {
       toast.success("Payment completed successfully.");
       setDateRange(initialDateRange);
-      router.push("/cars/rentalVehicles");
+      router.push("/restaurants/bookingRestaurants");
     }
     if (searchParams?.get("canceled")) {
       toast.error("Something went wrong.");
@@ -108,7 +108,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
     setIsLoading(true);
 
     axios
-      .post("/api/vehicles/reservations", {
+      .post("/api/restaurants/reservations", {
         newTotal,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,

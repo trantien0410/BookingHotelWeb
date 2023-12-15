@@ -187,7 +187,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
               user={restaurant.user}
               category={category}
               description={restaurant.description}
-              guessCount={restaurant.guessCount}
+              guestCount={restaurant.guestCount}
               latlng={restaurant.latlng}
               hyperlink={restaurant.hyperlink}
             />

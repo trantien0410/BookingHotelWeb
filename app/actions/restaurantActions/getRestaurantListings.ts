@@ -2,7 +2,7 @@ import prisma from "@/app/libs/prismadb";
 
 export interface IRestaurantListingsParams {
   userId?: string;
-  guessCount?: number;
+  guestCount?: number;
   startDate?: Date;
   endDate?: Date;
   countryValue?: string;
@@ -18,7 +18,7 @@ export default async function getRestaurantListings(
   try {
     const {
       userId,
-      guessCount,
+      guestCount,
       countryValue,
       stateValue,
       startDate,
@@ -38,9 +38,9 @@ export default async function getRestaurantListings(
       query.category = restaurantCategory;
     }
 
-    if (guessCount) {
-      query.guessCount = {
-        gte: +guessCount,
+    if (guestCount) {
+      query.guestCount = {
+        gte: +guestCount,
       };
     }
 

@@ -145,7 +145,7 @@ model Restaurant {
   hyperlink       String?
   createdAt       DateTime                @default(now())
   category        String
-  guessCount       Int
+  guestCount      Int
   detailedAddress String
   latlng          Float[]
   countryValue    String

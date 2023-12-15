@@ -60,7 +60,7 @@ const RestaurantRentModal = () => {
       countryValue: null,
       stateValue: null,
       latlng: [],
-      guessCount: 1,
+      guestCount: 1,
       images: [],
       price: 1,
       title: "",
@@ -72,7 +72,7 @@ const RestaurantRentModal = () => {
   const countryValue = watch("countryValue");
   const stateValue = watch("stateValue");
   const restaurantCategory = watch("category");
-  const guessCount = watch("guessCount");
+  const guestCount = watch("guestCount");
   const images = watch("images");
 
   const Map = useMemo(
@@ -234,8 +234,8 @@ const RestaurantRentModal = () => {
           subtitle="What amenities do you have?"
         />
         <Counter
-          onChange={(value) => setCustomValue("guessCount", value)}
-          value={guessCount}
+          onChange={(value) => setCustomValue("guestCount", value)}
+          value={guestCount}
           title="Guests"
           subtitle="How many guests do you allow?"
         />

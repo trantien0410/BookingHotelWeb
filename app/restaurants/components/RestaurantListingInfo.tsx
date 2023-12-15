@@ -14,7 +14,7 @@ const Map = dynamic(() => import("@/app/components/Map"), {
 interface RestaurantListingInfoProps {
   user: SafeUser;
   description: string;
-  guessCount: number;
+  guestCount: number;
   hyperlink: string | null;
   category:
     | {
@@ -28,7 +28,7 @@ interface RestaurantListingInfoProps {
 const RestaurantListingInfo: React.FC<RestaurantListingInfoProps> = ({
   user,
   description,
-  guessCount,
+  guestCount,
   category,
   latlng,
   hyperlink,
@@ -77,7 +77,7 @@ const RestaurantListingInfo: React.FC<RestaurantListingInfoProps> = ({
           "
           >
             <GrGroup size={24} />
-            {guessCount} {guessCount > 1 ? "seats" : "seat"}
+            {guestCount} {guestCount > 1 ? "guests" : "guest"}
           </div>
         </div>
       </div>

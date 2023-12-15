@@ -16,7 +16,7 @@ const RestaurantSearch = () => {
   const locationValue = params?.get("locationValue");
   const startDate = params?.get("startDate");
   const endDate = params?.get("endDate");
-  const guessCount = params?.get("guessCount");
+  const guestCount = params?.get("guestCount");
 
   const locationLabel = useMemo(() => {
     if (locationValue) {
@@ -43,12 +43,12 @@ const RestaurantSearch = () => {
   }, [startDate, endDate]);
 
   const guessLabel = useMemo(() => {
-    if (guessCount) {
-      return `${guessCount} Guests`;
+    if (guestCount) {
+      return `${guestCount} Guests`;
     }
 
     return "Add Guests";
-  }, [guessCount]);
+  }, [guestCount]);
 
   return (
     <div

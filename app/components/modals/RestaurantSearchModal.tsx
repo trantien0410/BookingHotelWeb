@@ -33,7 +33,7 @@ const RestaurantSearchModal = () => {
   const [country, setCountry] = useState<CountrySelectValue>();
   const [state, setState] = useState<StateSelectValue>();
   const [step, setStep] = useState(STEPS.LOCATION);
-  const [guessCount, setGuessCount] = useState(1);
+  const [guestCount, setGuestCount] = useState(1);
   const [priceRange, setPriceRange] = useState([20, 50]);
   const [dateRange, setDateRange] = useState<Range>({
     startDate: new Date(),
@@ -84,7 +84,7 @@ const RestaurantSearchModal = () => {
       ...currentQuery,
       countryValue: country?.value,
       stateValue: state?.value,
-      guessCount,
+      guestCount,
       minPrice: priceRange[0],
       maxPrice: priceRange[1],
     };
@@ -115,7 +115,7 @@ const RestaurantSearchModal = () => {
     country,
     state,
     router,
-    guessCount,
+    guestCount,
     dateRange,
     onNext,
     priceRange,
@@ -184,8 +184,8 @@ const RestaurantSearchModal = () => {
           subtitle="Find your perfect restaurant!"
         />
         <Counter
-          onChange={(value) => setGuessCount(value)}
-          value={guessCount}
+          onChange={(value) => setGuestCount(value)}
+          value={guestCount}
           title="Guess"
           subtitle="How many guests are coming?"
         />

@@ -15,6 +15,7 @@ interface VehicleListingInfoProps {
   user: SafeUser;
   description: string;
   seatCount: number;
+  phoneContact: string;
   hyperlink: string | null;
   category:
     | {
@@ -31,6 +32,7 @@ const VehicleListingInfo: React.FC<VehicleListingInfoProps> = ({
   seatCount,
   category,
   latlng,
+  phoneContact,
   hyperlink,
 }) => {
   const coordinates = latlng;
@@ -89,6 +91,22 @@ const VehicleListingInfo: React.FC<VehicleListingInfoProps> = ({
           description={category?.description}
         />
       )}
+      <hr className="my-6" />
+      <div className="text-xl font-semibold">About this place</div>
+      <div
+        className="
+      text-lg font-light text-neutral-500"
+      >
+        {description}
+      </div>
+      <hr className="my-6" />
+      <div className="text-xl font-semibold">Contact Us</div>
+      <div
+        className="
+      text-lg font-light text-neutral-500"
+      >
+        Phone Number: {phoneContact}
+      </div>
       {hyperlink && (
         <>
           <hr />
@@ -108,29 +126,22 @@ const VehicleListingInfo: React.FC<VehicleListingInfoProps> = ({
                     w-full
                     bg-white
                     border-black
-                    text-black
+                    text-rose-500
+                    text-bold
                     py-2
                     text-md
-                    font-light
+                    font-semibold
                     "
                 href={hyperlink}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Jump to our page
+                Visit Our Original Website !
               </a>
             </div>
           </div>
         </>
       )}
-      <hr className="my-6" />
-      <div className="text-xl font-semibold">About this place</div>
-      <div
-        className="
-      text-lg font-light text-neutral-500"
-      >
-        {description}
-      </div>
       <hr />
       <Map center={coordinates} />
     </div>

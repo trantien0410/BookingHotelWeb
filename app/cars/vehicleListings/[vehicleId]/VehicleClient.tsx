@@ -186,6 +186,7 @@ const VehicleClient: React.FC<ListingClientProps> = ({
               description={vehicle.description}
               seatCount={vehicle.seatCount}
               latlng={vehicle.latlng}
+              phoneContact={vehicle.phoneContact}
               hyperlink={vehicle.hyperlink}
             />
             <div

@@ -28,7 +28,8 @@ enum STEPS {
   IMAGES = 3,
   DESCRIPTION = 4,
   PRICE = 5,
-  HYPERLINK = 6,
+  CONTACT = 6,
+  HYPERLINK = 7,
 }
 
 const RentModal = () => {
@@ -67,6 +68,7 @@ const RentModal = () => {
       price: 1,
       title: "",
       description: "",
+      phoneContact: "",
       hyperlink: "",
     },
   });
@@ -328,6 +330,23 @@ const RentModal = () => {
           register={register}
           errors={errors}
           required
+        />
+      </div>
+    );
+  }
+  if (step === STEPS.CONTACT) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Stay Connected Anytime, Anywhere"
+          subtitle="Share your contact details and let's keep the conversation going!"
+        />
+        <Input
+          id="phoneContact"
+          label="PhoneContact"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
         />
       </div>
     );

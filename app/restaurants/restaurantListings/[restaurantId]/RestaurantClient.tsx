@@ -192,6 +192,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
               description={restaurant.description}
               guestCount={restaurant.guestCount}
               latlng={restaurant.latlng}
+              phoneContact={restaurant.phoneContact}
               hyperlink={restaurant.hyperlink}
             />
             <div

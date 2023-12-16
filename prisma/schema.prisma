@@ -55,6 +55,7 @@ model Listing {
   title           String
   description     String
   hyperlink       String?
+  phoneContact    String
   createdAt       DateTime      @default(now())
   category        String
   roomCount       Int
@@ -100,6 +101,7 @@ model Vehicle {
   title           String
   description     String
   hyperlink       String?
+  phoneContact    String
   createdAt       DateTime             @default(now())
   category        String
   seatCount       Int
@@ -143,6 +145,7 @@ model Restaurant {
   title           String
   description     String
   hyperlink       String?
+  phoneContact    String
   createdAt       DateTime                @default(now())
   category        String
   guestCount      Int

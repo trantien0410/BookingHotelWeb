@@ -25,6 +25,7 @@ const initialDateRange = {
 
 interface ListingClientProps {
   reservations?: SafeReservation[];
+  reservationsCount?: number;
   listing: SafeListing & {
     user: SafeUser;
   };
@@ -34,6 +35,7 @@ interface ListingClientProps {
 const ListingClient: React.FC<ListingClientProps> = ({
   listing,
   reservations = [],
+  reservationsCount = 0,
   currentUser,
 }) => {
   const searchParams = useSearchParams();
@@ -45,6 +47,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
   const [daysCount, setDaysCount] = useState(1);
   const [tax, setTax] = useState<number>(0);
+  const fullyBooked = reservationsCount >= 5;
 
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
@@ -208,8 +211,9 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 fees={fees}
                 tax={tax}
               />
-              <div
-                className="
+              {fullyBooked ? (
+                <div
+                  className="
                 mt-4 
                 border 
                 border-neutral-300 
@@ -220,16 +224,17 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 items-center 
                 justify-between
               "
-              >
-                <div className="font-light">
-                  <strong className="font-semibold">
-                    This is a rare find.
-                  </strong>{" "}
-                  {listing.user.name?.split(" ")[0]}&apos;s place on VatiBnb is
-                  usually fully booked.
+                >
+                  <div className="font-light">
+                    <strong className="font-semibold">
+                      This is a rare find.
+                    </strong>{" "}
+                    {listing.user.name?.split(" ")[0]}&apos;s place on VatiBnb
+                    is usually fully booked.
+                  </div>
+                  <IoDiamondOutline className="text-rose-500 ml-4" size={50} />
                 </div>
-                <IoDiamondOutline className="text-rose-500 ml-4" size={50} />
-              </div>
+              ) : null}
             </div>
           </div>
         </div>

@@ -355,10 +355,10 @@ const RestaurantRentModal = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        handleSubmit(onSubmit)();
-      }
+      // if (event.key === "Enter") {
+      //   event.preventDefault();
+      //   handleSubmit(onSubmit)();
+      // }
       if (event.key === "Escape") {
         event.preventDefault();
         restaurantRentModal.onClose();

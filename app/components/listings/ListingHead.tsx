@@ -10,7 +10,6 @@ import HeartButton from "../HeartButton";
 import { Tab } from "@headlessui/react";
 import { cn } from "@/app/libs/utils";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface ListingHeadProps {
   title: string;
@@ -38,19 +37,17 @@ const ListingHead: React.FC<ListingHeadProps> = ({
 
   const state = states.find((state) => state.value === stateValue);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const imagesPerPage = 4;
 
-  const nextImages = () => {
-    setCurrentIndex((oldIndex) =>
-      oldIndex + 4 < images.length ? oldIndex + 4 : oldIndex
-    );
+  const onPageChange = (newPage: number) => {
+    setCurrentPage(newPage);
   };
 
-  const prevImages = () => {
-    setCurrentIndex((oldIndex) =>
-      oldIndex - 4 >= 0 ? oldIndex - 4 : oldIndex
-    );
-  };
+  const paginatedImages = images.slice(
+    currentPage * imagesPerPage,
+    (currentPage + 1) * imagesPerPage
+  );
 
   return (
     <>
@@ -61,17 +58,15 @@ const ListingHead: React.FC<ListingHeadProps> = ({
       <Tab.Group
         as="div"
         className="flex flex-col-reverse"
-        key={currentIndex}
+        key={currentPage}
         defaultIndex={0}
       >
         <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
           <Tab.List className="grid grid-cols-4 gap-6">
-            {images
-              .slice(currentIndex, currentIndex + 4)
-              .map((image, index) => (
-                <Tab
-                  key={image.id}
-                  className=" 
+            {paginatedImages.map((image, index) => (
+              <Tab
+                key={image.id}
+                className=" 
                   relative
                   flex
                   aspect-square
@@ -81,28 +76,29 @@ const ListingHead: React.FC<ListingHeadProps> = ({
                   rounded-md
                   bg-white
                   "
-                >
-                  {({ selected }) => (
-                    <div>
-                      <span
-                        className="
+              >
+                {({ selected }) => (
+                  <div>
+                    <span
+                      className="
                         absolute h-full w-full aspect-square 
                         inset-0 overflow-hidden rounded-md"
-                      >
-                        <Image
-                          fill
-                          src={image.url}
-                          alt=""
-                          className="object-cover object-center"
-                        />
-                      </span>
-                      <span
-                        className={cn(
-                          "absolute inset-0 rounded-md ring-2 ring-offset-2",
-                          selected ? "ring-black" : "ring-transparent"
-                        )}
+                    >
+                      <Image
+                        fill
+                        src={image.url}
+                        alt=""
+                        className="object-cover object-center"
                       />
-                      {index === 3 && images.length - currentIndex > 4 && (
+                    </span>
+                    <span
+                      className={cn(
+                        "absolute inset-0 rounded-md ring-2 ring-offset-2",
+                        selected ? "ring-black" : "ring-transparent"
+                      )}
+                    />
+                    {index === 3 &&
+                      images.length - currentPage > imagesPerPage && (
                         <span
                           className="
                                   inset-0 rounded-md text-white items-center 
@@ -110,25 +106,57 @@ const ListingHead: React.FC<ListingHeadProps> = ({
                                   justify-center flex text-xl
                                   "
                         >
-                          +{images.length - currentIndex - 4}
+                          +{images.length - currentPage - imagesPerPage}
                         </span>
                       )}
-                    </div>
-                  )}
-                </Tab>
-              ))}
+                  </div>
+                )}
+              </Tab>
+            ))}
           </Tab.List>
 
-          {images.length > 4 && (
-            <div className="flex flex-col-1 mt-1">
-              <ArrowLeft className="h-5 w-5 ml-auto" onClick={prevImages} />
-              <ArrowRight className="h-5 w-5" onClick={nextImages} />
+          {images.length > imagesPerPage && (
+            <div className="flex items-center justify-end space-x-2 py-4">
+              <button
+                className=" relative
+                        disabled:opacity-70
+                        disabled:cursor-not-allowed
+                        rounded-lg
+                        hover:opacity-80
+                        transition
+                        bg-white
+                        text-black
+                        py-3
+                        text-md
+                        font-semibold"
+                onClick={() => onPageChange(currentPage - 1)}
+                disabled={currentPage === 0}
+              >
+                Previous
+              </button>
+              <button
+                className=" relative
+                        disabled:opacity-70
+                        disabled:cursor-not-allowed
+                        rounded-lg
+                        hover:opacity-80
+                        transition
+                        bg-white
+                        text-black
+                        py-3
+                        text-md
+                        font-semibold"
+                onClick={() => onPageChange(currentPage + 1)}
+                disabled={(currentPage + 1) * imagesPerPage >= images.length}
+              >
+                Next
+              </button>
             </div>
           )}
         </div>
 
         <Tab.Panels className="h-full w-full">
-          {images.slice(currentIndex, currentIndex + 4).map((image) => (
+          {paginatedImages.map((image) => (
             <Tab.Panel key={image.id}>
               <div
                 className="

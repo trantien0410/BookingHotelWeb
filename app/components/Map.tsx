@@ -29,6 +29,28 @@ const MapUpdater: React.FC<{ center?: number[] }> = ({ center }) => {
   const map = useMap();
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Control") {
+        map.scrollWheelZoom.enable();
+      }
+    };
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (event.key === "Control") {
+        map.scrollWheelZoom.disable();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [map]);
+
+  useEffect(() => {
     if (center && center.length === 2) {
       map.flyTo(center as L.LatLngTuple, 15);
     }
@@ -42,7 +64,7 @@ const Map: React.FC<MapProps> = ({ center }) => {
     <MapContainer
       center={(center as L.LatLngExpression) || [21.0245, 105.84117]}
       zoom={center ? 15 : 2}
-      scrollWheelZoom={true}
+      scrollWheelZoom={false}
       className="h-[35vh] rounded-lg"
     >
       <TileLayer url={url} attribution={attribution} />

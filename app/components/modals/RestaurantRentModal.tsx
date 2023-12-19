@@ -291,6 +291,7 @@ const RestaurantRentModal = () => {
           label="Description"
           disabled={isLoading}
           register={register}
+          multiline
           errors={errors}
           required
         />

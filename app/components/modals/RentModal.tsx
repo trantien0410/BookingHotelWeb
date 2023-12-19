@@ -306,6 +306,7 @@ const RentModal = () => {
           id="description"
           label="Description"
           disabled={isLoading}
+          multiline
           register={register}
           errors={errors}
           required

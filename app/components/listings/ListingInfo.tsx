@@ -134,7 +134,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
       <div className="text-xl font-semibold">About this place</div>
       <div
         className="
-      text-lg font-light text-neutral-500"
+      text-lg font-light text-neutral-500 whitespace-pre-wrap"
       >
         {description}
       </div>

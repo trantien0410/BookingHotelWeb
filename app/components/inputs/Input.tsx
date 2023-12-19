@@ -9,6 +9,7 @@ interface InputProps {
   type?: string;
   disabled?: boolean;
   formatPrice?: boolean;
+  multiline?: boolean;
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
@@ -20,6 +21,7 @@ const Input: React.FC<InputProps> = ({
   type = "text",
   disabled,
   formatPrice,
+  multiline,
   register,
   required,
   errors,
@@ -37,13 +39,13 @@ const Input: React.FC<InputProps> = ({
           "
         />
       )}
-      <input
-        id={id}
-        disabled={disabled}
-        {...register(id, { required })}
-        placeholder=" "
-        type={type}
-        className={`
+      {multiline ? (
+        <textarea
+          id={id}
+          disabled={disabled}
+          {...register(id, { required })}
+          placeholder=" "
+          className={`
           peer
           w-full
           p-4
@@ -60,7 +62,33 @@ const Input: React.FC<InputProps> = ({
           ${errors[id] ? "border-rose-500" : "border-neutral-300"}
           ${errors[id] ? "focus:border-rose-500" : "focus:border-black"}
         `}
-      />
+        />
+      ) : (
+        <input
+          id={id}
+          disabled={disabled}
+          {...register(id, { required })}
+          placeholder=" "
+          type={type}
+          className={`
+        peer
+        w-full
+        p-4
+        pt-6 
+        font-light 
+        bg-white 
+        border-2
+        rounded-md
+        outline-none
+        transition
+        disabled:opacity-70
+        disabled:cursor-not-allowed
+        ${formatPrice ? "pl-9" : "pl-4"}
+        ${errors[id] ? "border-rose-500" : "border-neutral-300"}
+        ${errors[id] ? "focus:border-rose-500" : "focus:border-black"}
+      `}
+        />
+      )}
       <label
         className={`
           absolute 

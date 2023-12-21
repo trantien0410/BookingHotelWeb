@@ -125,7 +125,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           return (
             <Button
               outline
-              label="Upload an Image"
+              label="Upload the Images"
               icon={BiUpload}
               disabled={disabled}
               onClick={onClick}

@@ -26,6 +26,8 @@ import CategoryBox from "../CategoryBox";
 import Container from "../Container";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoMdSwitch } from "react-icons/io";
+import { useEffect, useRef, useState } from "react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 export const categories = [
   {
@@ -155,6 +157,62 @@ const Categories = () => {
   const pathname = usePathname();
   const isMainPage = pathname === "/";
 
+  const [showRightScroll, setShowRightScroll] = useState(false);
+  const [showLeftScroll, setShowLeftScroll] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (container) {
+      const isScrollable = container.scrollWidth > container.clientWidth;
+      setShowRightScroll(
+        isScrollable &&
+          container.scrollLeft < container.scrollWidth - container.clientWidth
+      );
+      setShowLeftScroll(container.scrollLeft > 0); // Set true if scrolled from default position
+    }
+  }, []);
+
+  const handleRightScroll = () => {
+    const container = containerRef.current;
+
+    if (container) {
+      container.scrollBy({
+        left: container.clientWidth,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleLeftScroll = () => {
+    // New function to handle left scrolling
+    const container = containerRef.current;
+
+    if (container) {
+      container.scrollBy({
+        left: -container.clientWidth,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const handleScroll = () => {
+      if (container) {
+        setShowRightScroll(
+          container.scrollLeft < container.scrollWidth - container.clientWidth
+        );
+        setShowLeftScroll(container.scrollLeft > 0);
+      }
+    };
+
+    container?.addEventListener("scroll", handleScroll);
+
+    return () => container?.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (!isMainPage) {
     return null;
   }
@@ -162,6 +220,7 @@ const Categories = () => {
   return (
     <Container categoryContainer>
       <div
+        ref={containerRef}
         className="
           pt-2
           flex
@@ -173,6 +232,14 @@ const Categories = () => {
           w-full
         "
       >
+        {showLeftScroll && ( // Conditionally render the left scroll button
+          <button
+            className="absolute left-20 z-10 bg-white border rounded-full shadow-md p-2 text-neutral-800"
+            onClick={handleLeftScroll}
+          >
+            <FiChevronLeft />
+          </button>
+        )}
         {categories.map((item, index) => (
           <CategoryBox
             key={item.label}
@@ -184,6 +251,14 @@ const Categories = () => {
           />
         ))}
       </div>
+      {showRightScroll && (
+        <button
+          className="absolute right-20 z-10 bg-white border rounded-full shadow-md p-2 text-neutral-800"
+          onClick={handleRightScroll}
+        >
+          <FiChevronRight />
+        </button>
+      )}
       {/* <div
         onClick={() => {}}
         className="

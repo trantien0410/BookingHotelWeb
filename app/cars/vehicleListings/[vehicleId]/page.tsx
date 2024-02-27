@@ -5,6 +5,7 @@ import getVehicleListingById from "@/app/actions/carActions/getVehicleListingByI
 import getVehicleReservations from "@/app/actions/carActions/getVehicleReservations";
 import VehicleClient from "./VehicleClient";
 import { getVehicleReservationsCount } from "@/app/actions/carActions/getVehicleReservationCount";
+import { getReservationsCountByUser } from "@/app/actions/getReservationCountByUser";
 
 interface IParams {
   vehicleId?: string;
@@ -15,6 +16,9 @@ const VehiclePage = async ({ params }: { params: IParams }) => {
   const reservations = await getVehicleReservations(params);
   const currentUser = await getCurrentUser();
   const reservationsCount = await getVehicleReservationsCount();
+  const hotelReservationsCount = currentUser
+    ? await getReservationsCountByUser(currentUser.id)
+    : 0;
 
   if (!vehicle) {
     return (
@@ -30,6 +34,7 @@ const VehiclePage = async ({ params }: { params: IParams }) => {
         vehicle={vehicle}
         reservations={reservations}
         reservationsCount={reservationsCount}
+        hotelReservationsCount={hotelReservationsCount}
         currentUser={currentUser}
       />
     </ClientOnly>

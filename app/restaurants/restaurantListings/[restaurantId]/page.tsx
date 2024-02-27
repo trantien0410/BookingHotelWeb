@@ -5,6 +5,7 @@ import getRestaurantListingById from "@/app/actions/restaurantActions/getRestaur
 import getRestaurantReservations from "@/app/actions/restaurantActions/getRestaurantReservations";
 import RestaurantClient from "./RestaurantClient";
 import { getRestaurantReservationsCount } from "@/app/actions/restaurantActions/getRestaurantReservationCount";
+import { getReservationsCountByUser } from "@/app/actions/getReservationCountByUser";
 
 interface IParams {
   restaurantId?: string;
@@ -15,6 +16,9 @@ const RestaurantPage = async ({ params }: { params: IParams }) => {
   const reservations = await getRestaurantReservations(params);
   const currentUser = await getCurrentUser();
   const reservationsCount = await getRestaurantReservationsCount();
+  const hotelReservationsCount = currentUser
+  ? await getReservationsCountByUser(currentUser.id)
+  : 0;
 
   if (!restaurant) {
     return (
@@ -30,6 +34,7 @@ const RestaurantPage = async ({ params }: { params: IParams }) => {
         restaurant={restaurant}
         reservations={reservations}
         reservationsCount={reservationsCount}
+        hotelReservationsCount={hotelReservationsCount}
         currentUser={currentUser}
       />
     </ClientOnly>

@@ -30,6 +30,7 @@ const initialDateRange = {
 interface ListingClientProps {
   reservations?: SafeRestaurantReservation[];
   reservationsCount?: number;
+  hotelReservationsCount?: number;
   restaurant: SafeRestaurant & {
     user: SafeUser;
   };
@@ -40,6 +41,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
   restaurant,
   reservations = [],
   reservationsCount = 0,
+  hotelReservationsCount = 0,
   currentUser,
 }) => {
   const searchParams = useSearchParams();
@@ -107,6 +109,13 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen();
+    }
+    // Check if the user has hotel reservations
+    if (hotelReservationsCount <= 0) {
+      toast.error(
+        "You must have at least one hotel reservation to book a restaurant."
+      );
+      return;
     }
     setIsLoading(true);
 

@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import { BiDollar } from "react-icons/bi";
+import { FiEyeOff, FiEye } from "react-icons/fi";
 
 interface InputProps {
   id: string;
@@ -12,7 +14,7 @@ interface InputProps {
   multiline?: boolean;
   required?: boolean;
   register: UseFormRegister<FieldValues>;
-  errors: FieldErrors;
+  errors: { [x: string]: any }; // Adjust based on your error object structure
 }
 
 const Input: React.FC<InputProps> = ({
@@ -26,6 +28,12 @@ const Input: React.FC<InputProps> = ({
   required,
   errors,
 }) => {
+  // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Toggle function
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+
   return (
     <div className="w-full relative">
       {formatPrice && (
@@ -38,6 +46,15 @@ const Input: React.FC<InputProps> = ({
             left-2
           "
         />
+      )}
+      {!multiline && type === "password" && (
+        <button
+          type="button"
+          onClick={toggleShowPassword}
+          className=" text-neutral-700 absolute right-3 top-1/2 transform -translate-y-1/2"
+        >
+          {showPassword ? <FiEyeOff size={22} /> : <FiEye size={22} />}
+        </button>
       )}
       {multiline ? (
         <textarea
@@ -69,7 +86,7 @@ const Input: React.FC<InputProps> = ({
           disabled={disabled}
           {...register(id, { required })}
           placeholder=" "
-          type={type}
+          type={showPassword && type === "password" ? "text" : type} // Use state to determine input type
           className={`
         peer
         w-full
@@ -109,6 +126,10 @@ const Input: React.FC<InputProps> = ({
       >
         {label}
       </label>
+      {/* Error message display */}
+      {errors[id] && (
+        <p className="text-rose-500 text-sm mt-1">{errors[id].message}</p>
+      )}
     </div>
   );
 };

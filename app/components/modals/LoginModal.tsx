@@ -1,9 +1,11 @@
 "use client";
 
+import { z } from "zod";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { signIn } from "next-auth/react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { useRouter } from "next/navigation";
@@ -16,6 +18,14 @@ import Input from "../inputs/Input";
 import Heading from "../Heading";
 import Button from "../Button";
 
+const formSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .email("This is not a valid email."),
+  password: z.string().min(8, "Please fill your password"),
+});
+
 const LoginModal = () => {
   const router = useRouter();
   const loginModal = useLoginModal();
@@ -27,6 +37,7 @@ const LoginModal = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",

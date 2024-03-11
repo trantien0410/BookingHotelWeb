@@ -1,10 +1,12 @@
 "use client";
 
+import { z } from "zod";
 import axios from "axios";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 
@@ -14,6 +16,28 @@ import Input from "../inputs/Input";
 import { toast } from "react-hot-toast";
 import Button from "../Button";
 import { signIn } from "next-auth/react";
+
+const formSchema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    email: z
+      .string()
+      .min(1, { message: "This field has to be filled." })
+      .email("This is not a valid email."),
+    password: z
+      .string()
+      .regex(
+        /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/,
+        "Password must start with an uppercase letter, be at least 8 characters long, include a number, and a special character"
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"], // This is used to indicate which field the error should be associated with
+  });
+
+type RegisterFormValues = z.infer<typeof formSchema>;
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
@@ -26,10 +50,12 @@ const RegisterModal = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -42,6 +68,7 @@ const RegisterModal = () => {
         .then(() => {
           loginModal.onOpen();
           registerModal.onClose();
+          toast.success("Register successfully");
         })
         .catch((error) => {
           toast.error("error");
@@ -99,6 +126,15 @@ const RegisterModal = () => {
       <Input
         id="password"
         label="Password"
+        type="password"
+        disabled={isLoading}
+        register={register}
+        errors={errors}
+        required
+      />
+      <Input
+        id="confirmPassword"
+        label="Confirm Password"
         type="password"
         disabled={isLoading}
         register={register}

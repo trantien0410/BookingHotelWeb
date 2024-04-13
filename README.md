@@ -1,9 +1,9 @@
 <h1 align="center">:blush: A Service for Online Hotel Reservation and Management System :100:</h1>
 
-<h2 align="center">:blush: By Tran Van Tien :100:</h2>
+<h2 align="center">By Tran Van Tien</h2>
 
 <h2 align="center">VatiBnb
-    <img src="/images/Logo10.png" width="36"/>
+    <img src="./images/Logo10.png" width="36"/>
 </h2>
 
 ## Getting Started

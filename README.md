@@ -3,7 +3,7 @@
 <h2 align="center">By Tran Van Tien</h2>
 
 <h2 align="center">VatiBnb
-    <img src="./images/Logo10.png" width="36"/>
+    <img src="public/images/Logo10.png" width="36"/>
 </h2>
 
 ## Getting Started

@@ -1,3 +1,11 @@
+<h1 align="center">:blush: A Service for Online Hotel Reservation and Management System :100:</h1>
+
+<h2 align="center">:blush: By Tran Van Tien :100:</h2>
+
+<h2 align="center">VatiBnb
+    <img src="/images/Logo10.png" width="36"/>
+</h2>
+
 ## Getting Started
 
 ### Prerequisites
@@ -34,14 +42,15 @@ FRONTEND_STORE_URL=
 STRIPE_WEBHOOK_SECRET=
 NEXT_PUBLIC_OPENCAGE_API_KEY=
 ```
--For Database url, we can get it from MongoDB
--For NextAuth Secret, key we can use like NEXTAUTH_SECRET
--For Github Id and Github Secret, we have to access to [Github](https://github.com/) and then find developer setting for OAuth Setting.
--For Google Client Id and Google Client Secret, we have to access to [Google Cloud console](https://cloud.google.com/) and then find API gateway for OAuth Setting.
--For Cloudinary Name, we have to access to [Cloudinary](https://cloudinary.com/) and choose developer for setting.
--For Frontend store url, this is the localhost of this project.
--For Stripe API key and Stripe webhook secret, we have to access to [Stripe](https://dashboard.stripe.com/) and then try to setup with some basic steps by following the instructions of Stripe to settings.
--For OpenCage API key, we have to access the [OpenCage](https://opencagedata.com/api) then find the Geocoding API for generating the API key.
+
+- For Database url, we can get it from MongoDB
+- For NextAuth Secret, key we can use like NEXTAUTH_SECRET
+- For Github Id and Github Secret, we have to access to [Github](https://github.com/) and then find developer setting for OAuth Setting.
+- For Google Client Id and Google Client Secret, we have to access to [Google Cloud console](https://cloud.google.com/) and then find API gateway for OAuth Setting.
+- For Cloudinary Name, we have to access to [Cloudinary](https://cloudinary.com/) and choose developer for setting.
+- For Frontend store url, this is the localhost of this project.
+- For Stripe API key and Stripe webhook secret, we have to access to [Stripe](https://dashboard.stripe.com/) and then try to setup with some basic steps by following the instructions of Stripe to settings.
+- For OpenCage API key, we have to access the [OpenCage](https://opencagedata.com/api) then find the Geocoding API for generating the API key.
 
 ### Start the app
 
@@ -53,6 +62,6 @@ npm run dev
 
 Running commands with npm `npm run [command]`
 
-| command         | description                              |
-| :-------------- | :--------------------------------------- |
-| `dev`           | Starts a development instance of the app |
+| command | description                              |
+| :------ | :--------------------------------------- |
+| `dev`   | Starts a development instance of the app |

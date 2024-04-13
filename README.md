@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+**Node version 20.x**
+
+### Cloning the repository
+
+```shell
+git clone https://github.com/trantien0410/BookingHotelWeb.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install packages
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```shell
+npm i
+```
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+### Setup .env file
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```js
+DATABASE_URL=
+NEXTAUTH_SECRET=
 
-## Learn More
+GITHUB_ID=
+GITHUB_SECRET=
 
-To learn more about Next.js, take a look at the following resources:
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+STRIPE_API_KEY=
+FRONTEND_STORE_URL=
+STRIPE_WEBHOOK_SECRET=
+NEXT_PUBLIC_OPENCAGE_API_KEY=
+```
+For Database url, we can get it from MongoDB
+For NextAuth Secret, key we can use like NEXTAUTH_SECRET
+For Github Id and Github Secret, we have to access to [Github](https://github.com/) and then find developer setting for OAuth Setting.
+For Google Client Id and Google Client Secret, we have to access to [Google Cloud console](https://cloud.google.com/) and then find API gateway for OAuth Setting.
+For Cloudinary Name, we have to access to [Cloudinary](https://cloudinary.com/) and choose developer for setting.
+For Frontend store url, this is the localhost of this project.
+For Stripe API key and Stripe webhook secret, we have to access to [Stripe](https://dashboard.stripe.com/) and then try to setup with some basic steps by following the instructions of Stripe to settings.
+For OpenCage API key, we have to access the [OpenCage](https://opencagedata.com/api) then find the Geocoding API for generating the API key.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Start the app
 
-## Deploy on Vercel
+```shell
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Available commands
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Running commands with npm `npm run [command]`
+
+| command         | description                              |
+| :-------------- | :--------------------------------------- |
+| `dev`           | Starts a development instance of the app |

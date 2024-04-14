@@ -43,7 +43,11 @@ STRIPE_WEBHOOK_SECRET=
 NEXT_PUBLIC_OPENCAGE_API_KEY=
 ```
 
-- For Database url, we can get it from MongoDB
+- For Database url, we can get it from MongoDB. After getting it from MongoDB, then you need to turn on the terminal and run the following command:
+```shell
+npx prisma db push
+npx prisma generate
+```
 - For NextAuth Secret, key we can use like NEXTAUTH_SECRET
 - For Github Id and Github Secret, we have to access to [Github](https://github.com/) and then find developer setting for OAuth Setting.
 - For Google Client Id and Google Client Secret, we have to access to [Google Cloud console](https://cloud.google.com/) and then find API gateway for OAuth Setting.
